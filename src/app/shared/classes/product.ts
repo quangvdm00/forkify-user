@@ -1,8 +1,10 @@
+import { Category } from "./category";
+import { ProductImage } from "./product-image";
+
 // Products
 export interface Product {
     id?: number;
     title?: string;
-    description?: string;
     type?: string;
     brand?: string;
     collection?: any[];
@@ -15,7 +17,18 @@ export interface Product {
     quantity?: number;
     tags?: any[];
     variants?: Variants[];
-    images?: Images[];
+    // images?: Images[];
+
+    //Back-end
+    name?: string;
+    description?: string;
+    discountPercent?: number;
+    cost?: number;
+    averageRating?: number;
+    reviewCount: number;
+    sold: number;
+    categories: Category[];
+    images: ProductImage[];
 }
 
 export interface Variants {

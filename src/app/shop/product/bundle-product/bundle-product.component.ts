@@ -12,7 +12,7 @@ import { SizeModalComponent } from "../../../shared/components/modal/size-modal/
 })
 export class BundleProductComponent implements OnInit {
 
-  public product: Product = {};
+  public product: Product;
   public counter: number = 1;
   public activeSlide: any = 0;
   public selectedSize: any;
@@ -24,9 +24,9 @@ export class BundleProductComponent implements OnInit {
   public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
 
   constructor(private route: ActivatedRoute, private router: Router,
-    public productService: ProductService) { 
-      this.route.data.subscribe(response => this.product = response.data );
-    }
+    public productService: ProductService) {
+    this.route.data.subscribe(response => this.product = response.data);
+  }
 
   ngOnInit(): void {
   }
@@ -56,22 +56,22 @@ export class BundleProductComponent implements OnInit {
   selectSize(size) {
     this.selectedSize = size;
   }
-  
+
   // Increament
   increment() {
-    this.counter++ ;
+    this.counter++;
   }
 
   // Decrement
   decrement() {
-    if (this.counter > 1) this.counter-- ;
+    if (this.counter > 1) this.counter--;
   }
 
   // Add to cart
   async addToCart(product: any) {
     product.quantity = this.counter || 1;
     const status = await this.productService.addToCart(product);
-    if(status)
+    if (status)
       this.router.navigate(['/shop/cart']);
   }
 
@@ -79,7 +79,7 @@ export class BundleProductComponent implements OnInit {
   async buyNow(product: any) {
     product.quantity = this.counter || 1;
     const status = await this.productService.addToCart(product);
-    if(status)
+    if (status)
       this.router.navigate(['/shop/checkout']);
   }
 

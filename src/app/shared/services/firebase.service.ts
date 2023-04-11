@@ -1,16 +1,17 @@
-import {Injectable} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/compat/auth';
-import {Router} from "@angular/router";
+import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
 })
 export class FirebaseService {
-    isLoggedIn = false;
+    loggedIn = false;
+    isUser: boolean = false;
     token: string;
 
     constructor(public firebaseAuth: AngularFireAuth,
-                private router: Router) {
+        private router: Router) {
     }
 
     signUp(email: string, password: string) {
@@ -24,25 +25,26 @@ export class FirebaseService {
         this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .then(
                 response => {
-                    console.log(response);
+                    if (response.user.emailVerified) {
+
+                    }
+                    else {
+
+                    }
                     response.user.getIdToken()
                         .then(
                             (token: string) => {
                                 this.token = token;
-                                console.log('Token Firebase: ', {token});
+                                console.log('Token Firebase: ', { token });
                                 this.token = token;
                                 localStorage.setItem('jwt-token', token);
                             }
                         );
-                    this.getToken();
-                    // this.csrfService.getToken().subscribe(
-                    //     token => this.csrfService.setToken(token)
-                    // );
                     this.router.navigate(['home']);
                 }
             ).catch(
-            error => console.log(error)
-        );
+                error => console.log(error)
+            );
     }
 
     // async signUp(email: string, password: string) {
@@ -55,16 +57,12 @@ export class FirebaseService {
     //         );
     // }
 
-    getToken() {
-        this.firebaseAuth.currentUser.then(
-            res => res.getIdToken().then(
-                (token: string) => {
-                    this.token = token;
-                    console.log(token);
-                }
-            )
-        );
-        console.log('Token: ', this.token);
+    IsLoggedIn() {
+        return this.loggedIn;
+    }
+
+    IsUser() {
+        return this.isUser;
     }
 
     isAuthenticated() {

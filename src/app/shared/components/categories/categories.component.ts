@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Product} from '../../classes/product';
-import {ProductService} from '../../services/product.service';
+import { Component, OnInit } from '@angular/core';
+import { Product } from '../../classes/product';
+import { ProductService } from '../../services/product.service';
 
 @Component({
     selector: 'app-categories',
@@ -20,7 +20,7 @@ export class CategoriesComponent implements OnInit {
     }
 
     get filterbyCategory() {
-        const category = [...new Set(this.products.map(product => product.type))];
+        const category = [...new Set(this.products.map(product => product.categories[0].name))];
         return category;
     }
 

@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {ToastrService} from 'ngx-toastr';
-import {Product} from '../classes/product';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { Product } from '../classes/product';
+import { environment } from 'src/environments/environment';
 
 const state = {
     products: JSON.parse(localStorage['products'] || '[]'),
@@ -17,12 +18,15 @@ const state = {
 })
 export class ProductService {
 
-    public Currency = {name: 'Dollar', currency: 'USD', price: 1} // Default Currency
+    public Currency = { name: 'Dollar', currency: 'USD', price: 1 } // Default Currency
     public OpenCart: boolean = false;
     public Products
 
-    constructor(private http: HttpClient,
-                private toastrService: ToastrService) {
+    private baseUrl = `${environment.foodOrderingBaseApiUrl}`
+    private productUrl = `${environment.foodOrderingBaseApiUrl}/products`
+
+    constructor(private httpClient: HttpClient,
+        private toastrService: ToastrService) {
     }
 
     /*
@@ -33,11 +37,16 @@ export class ProductService {
 
     // Product
     private get products(): Observable<Product[]> {
-        this.Products = this.http.get<Product[]>('assets/data/products.json').pipe(map(data => data));
+        this.Products = this.httpClient.get<Product[]>(this.baseUrl + '/v1/products/enable').pipe(map(data => data));
         this.Products.subscribe(next => {
             localStorage['products'] = JSON.stringify(next);
         });
         return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
+    }
+
+    //Get Product Pageable
+    getProductPagination(thePage: number, thePageSize: number, sortBy: string, sortDir: string) {
+        return this.httpClient.get<GetResponseProducts>(this.productUrl + `?pageNo=${thePage}&pageSize=${thePageSize}&sortBy=${sortBy}&sortDir=${sortDir}"`)
     }
 
     // Get Products
@@ -338,4 +347,14 @@ export class ProductService {
         };
     }
 
+}
+
+interface GetResponseProducts {
+    products: Product[];
+    page: {
+        pageNo: number,
+        pageSize: number,
+        totalElements: number,
+        totalPages: number,
+    };
 }

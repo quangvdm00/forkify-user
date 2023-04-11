@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {HomeSlider} from '../../../shared/data/slider';
+import { Component, Input, OnInit } from '@angular/core';
+import { HomeSlider } from '../../../shared/data/slider';
 
 @Component({
     selector: 'app-slider',

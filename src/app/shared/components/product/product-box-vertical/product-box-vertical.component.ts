@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Product} from "../../../classes/product";
+import { Component, Input, OnInit } from '@angular/core';
+import { Product } from "../../../classes/product";
 
 @Component({
     selector: 'app-product-box-vertical',
@@ -17,30 +17,31 @@ export class ProductBoxVerticalComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log(this.product);
     }
 
     // Get Product Color
-    Color(variants) {
-        const uniqColor = [];
-        for (let i = 0; i < Object.keys(variants).length; i++) {
-            if (uniqColor.indexOf(variants[i].color) === -1 && variants[i].color) {
-                uniqColor.push(variants[i].color)
-            }
-        }
-        return uniqColor
-    }
+    // Color(variants) {
+    //     const uniqColor = [];
+    //     for (let i = 0; i < Object.keys(variants).length; i++) {
+    //         if (uniqColor.indexOf(variants[i].color) === -1 && variants[i].color) {
+    //             uniqColor.push(variants[i].color)
+    //         }
+    //     }
+    //     return uniqColor
+    // }
 
     // Change Variants
-    ChangeVariants(color, product) {
-        product.variants.map((item) => {
-            if (item.color === color) {
-                product.images.map((img) => {
-                    if (img.image_id === item.image_id) {
-                        this.ImageSrc = img.src;
-                    }
-                })
-            }
-        })
-    }
+    // ChangeVariants(color, product) {
+    //     product.variants.map((item) => {
+    //         if (item.color === color) {
+    //             product.images.map((img) => {
+    //                 if (img.image_id === item.image_id) {
+    //                     this.ImageSrc = img.src;
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }
 
 }

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {ProductSlider} from '../../shared/data/slider';
-import {Product} from '../../shared/classes/product';
-import {ProductService} from '../../shared/services/product.service';
+import { Component, OnInit } from '@angular/core';
+import { ProductSlider } from '../../shared/data/slider';
+import { Product } from '../../shared/classes/product';
+import { ProductService } from '../../shared/services/product.service';
 
 @Component({
     selector: 'app-shop',
@@ -11,7 +11,16 @@ import {ProductService} from '../../shared/services/product.service';
 export class ShopComponent implements OnInit {
 
     public products: Product[] = [];
+    public trendingProducts: Product[] = [];
+    public bestSellingProducts: Product[] = [];
     public ProductSliderConfig: any = ProductSlider;
+
+    //Pagination Properties
+    thePageNumber = 1;
+    thePageSize = 10;
+    sortBy = 'id';
+    sortDir = 'asc'
+    theTotalElements = 0;
 
     constructor(public productService: ProductService) {
         this.productService.getProducts.subscribe(response =>
@@ -21,13 +30,13 @@ export class ShopComponent implements OnInit {
 
     // Sliders
     public sliders = [{
-        title: 'save 10%',
-        subTitle: 'fresh vegetables',
-        image: 'assets/images/slider/7.jpg'
+        title: '',
+        subTitle: 'Giảm giá 10%',
+        image: 'assets/images/slider/qc/qc-01.jpg'
     }, {
         title: 'save 10%',
         subTitle: 'fresh vegetables',
-        image: 'assets/images/slider/8.jpg'
+        image: 'assets/images/slider/qc/qc-02.jpg'
     }];
 
     // Blogs
@@ -54,6 +63,36 @@ export class ShopComponent implements OnInit {
     }]
 
     ngOnInit(): void {
+        this.getTrendingProducts();
+        this.getBestSellingProducts();
+    }
+
+    getTrendingProducts() {
+        this.productService.getProductPagination(this.thePageNumber - 1, this.thePageSize, 'averageRating', 'desc')
+            .subscribe(this.processTrendingResult())
+    }
+
+    getBestSellingProducts() {
+        this.productService.getProductPagination(this.thePageNumber - 1, this.thePageSize, 'sold', 'desc')
+            .subscribe(this.processBestSellingResult())
+    }
+
+    processTrendingResult() {
+        return (data: any) => {
+            this.trendingProducts = data.products;
+            this.thePageNumber = data.page.pageNo + 1;
+            this.thePageSize = data.page.pageSize;
+            this.theTotalElements = data.page.totalElements;
+        }
+    }
+
+    processBestSellingResult() {
+        return (data: any) => {
+            this.bestSellingProducts = data.products;
+            this.thePageNumber = data.page.pageNo + 1;
+            this.thePageSize = data.page.pageSize;
+            this.theTotalElements = data.page.totalElements;
+        }
     }
 
 }
