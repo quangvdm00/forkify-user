@@ -5,6 +5,7 @@ import { map, startWith } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../classes/product';
 import { environment } from 'src/environments/environment';
+import { StringBoolObject } from '../string-bool-object';
 
 const state = {
     products: JSON.parse(localStorage['products'] || '[]'),
@@ -24,6 +25,7 @@ export class ProductService {
 
     private baseUrl = `${environment.foodOrderingBaseApiUrl}`
     private productUrl = `${environment.foodOrderingBaseApiUrl}/products`
+    private userUrl = `${environment.foodOrderingBaseApiUrl}/users`
 
     constructor(private httpClient: HttpClient,
         private toastrService: ToastrService) {
@@ -80,16 +82,27 @@ export class ProductService {
     }
 
     // Add to Wishlist
-    public addToWishlist(product): any {
-        const wishlistItem = state.wishlist.find(item => item.id === product.id)
-        if (!wishlistItem) {
-            state.wishlist.push({
-                ...product
-            })
-        }
-        this.toastrService.success('Product has been added in wishlist.');
-        localStorage.setItem("wishlistItems", JSON.stringify(state.wishlist));
-        return true
+    public addToWishlist(userId: number, product: Product) {
+        // console.log(product.id)
+        // const wishlistItem = state.wishlist.find(item => item.id === product.id)
+        // if (!wishlistItem) {
+        //     state.wishlist.push({
+        //         ...product
+        //     })
+        // }
+        // this.toastrService.success('Product has been added in wishlist.');
+        // localStorage.setItem("wishlistItems", JSON.stringify(state.wishlist));
+        // return true
+        return this.httpClient.post<StringBoolObject>(this.userUrl + `/${userId}/loves/${product.id}`, "").subscribe({
+            next: () => {
+                this.toastrService.success(`${product.name} đã được thêm vào danh sách yêu thích.`);
+            }
+        })
+    }
+
+    //Check Wishlist Product
+    checkLoveProduct(userId: number, productId: number) {
+        return this.httpClient.get<StringBoolObject>(this.userUrl + `/${userId}/loves/${productId}`);
     }
 
     // Remove Wishlist items
@@ -345,6 +358,10 @@ export class ProductService {
             endIndex: endIndex,
             pages: pages
         };
+    }
+
+    getProductById(id: number) {
+        return this.httpClient.get<Product>(this.productUrl + `/${id}`);
     }
 
 }

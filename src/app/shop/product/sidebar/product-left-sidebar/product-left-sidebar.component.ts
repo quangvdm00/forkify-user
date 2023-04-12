@@ -24,14 +24,25 @@ export class ProductLeftSidebarComponent implements OnInit {
     public ProductDetailsMainSliderConfig: any = ProductDetailsMainSlider;
     public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
 
-    constructor(private route: ActivatedRoute, private router: Router,
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
         public productService: ProductService) {
-        this.route.data.subscribe(response => this.product = response.data);
+
     }
 
-    ngOnInit(): void {
-        console.log("dddd", this.product)
+    ngOnInit() {
+        this.loadProductData();
     }
+
+    loadProductData() {
+        const id = +this.route.snapshot.paramMap.get('id');
+        this.productService.getProductById(id).subscribe((product) => {
+            this.product = product;
+        })
+    }
+
+
 
     // Get Product Color
     Color(variants) {
@@ -87,7 +98,7 @@ export class ProductLeftSidebarComponent implements OnInit {
 
     // Add to Wishlist
     addToWishlist(product: any) {
-        this.productService.addToWishlist(product);
+        this.productService.addToWishlist(1, product);
     }
 
     // Toggle Mobile Sidebar

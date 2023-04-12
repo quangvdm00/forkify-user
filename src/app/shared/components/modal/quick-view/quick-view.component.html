@@ -14,13 +14,15 @@
                 <div class="col-lg-6 rtl-text">
                     <div class="product-right">
                         <h2>{{ product.title | titlecase }}</h2>
-                        <h3>{{ product.cost - (product.cost * product.discountPercent/100) | currency: 'VND'}}
-                            <del *ngIf="product?.discountPercent > 0"><span class="money"> {{ product.cost |
-                                    currency:'VND' }}</span></del>
+                        <h3>{{ product.cost - (product.cost * product.discountPercent / 100) | currency: 'VND'}}
+                            <del *ngIf="product?.discountPercent > 0"><span class="money">
+                                    {{ product.cost }}
+                                </span></del>
                         </h3>
+
                         <!-- <ul class="color-variant" *ngIf="Color(product.variants).length">
-                            <li [class]="color" *ngFor="let color of Color(product.variants)"
-                                [ngStyle]="{'background-color': color}" (click)="ChangeVariants(color, product)">
+                            <li *ngFor="let category of product.categories">
+                                {{ category.name }}
                             </li>
                         </ul> -->
                         <div class="border-product">
@@ -35,9 +37,9 @@
                                     </li>
                                 </ul>
                             </div> -->
-                            <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></h5>
+                            <!-- <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></h5>
                             <h5 class="avalibility" *ngIf="counter > product.stock"><span>Out of Stock</span></h5>
-                            <h6 class="product-title">quantity</h6>
+                            <h6 class="product-title">quantity</h6> -->
                             <div class="qty-box">
                                 <!-- <div class="input-group">
                                     <span class="input-group-prepend">
@@ -60,8 +62,8 @@
                         <div class="product-buttons">
                             <a href="javascript:void(0)" class="btn btn-solid"
                                 [class.disabled]="counter > product.stock" (click)="addToCart(product)">Thêm ngay</a>
-                            <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]"
-                                class="btn btn-solid">Xem chi tiết</a>
+                            <a [routerLink]="['/shop/products', product.id]" class="btn btn-solid">Xem chi
+                                tiết</a>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ViewportScroller} from '@angular/common';
-import {ProductService} from "../../../shared/services/product.service";
-import {Product} from '../../../shared/classes/product';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { ProductService } from "../../../shared/services/product.service";
+import { Product } from '../../../shared/classes/product';
 
 @Component({
     selector: 'app-collection-left-sidebar',
@@ -28,7 +28,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
     public loader: boolean = true;
 
     constructor(private route: ActivatedRoute, private router: Router,
-                private viewScroller: ViewportScroller, public productService: ProductService) {
+        private viewScroller: ViewportScroller, public productService: ProductService) {
         // Get Query params..
         this.route.queryParams.subscribe(params => {
 
@@ -51,7 +51,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
                 if (params.category)
                     this.products = this.products.filter(item => item.type == this.category);
                 // Price Filter
-                this.products = this.products.filter(item => item.price >= this.minPrice && item.price <= this.maxPrice)
+                this.products = this.products.filter(item => item.cost >= this.minPrice && item.price <= this.maxPrice)
                 // Paginate Products
                 this.paginate = this.productService.getPager(this.products.length, +this.pageNo);     // get paginate object from service
                 this.products = this.products.slice(this.paginate.startIndex, this.paginate.endIndex + 1); // get current page of items
@@ -81,7 +81,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
     sortByFilter(value) {
         this.router.navigate([], {
             relativeTo: this.route,
-            queryParams: {sortBy: value ? value : null},
+            queryParams: { sortBy: value ? value : null },
             queryParamsHandling: 'merge', // preserve the existing query params in the route
             skipLocationChange: false  // do trigger navigation
         }).finally(() => {
@@ -130,7 +130,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
     setPage(page: number) {
         this.router.navigate([], {
             relativeTo: this.route,
-            queryParams: {page: page},
+            queryParams: { page: page },
             queryParamsHandling: 'merge', // preserve the existing query params in the route
             skipLocationChange: false  // do trigger navigation
         }).finally(() => {

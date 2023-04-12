@@ -7,7 +7,8 @@
                 <div class="col-lg-6">
                     <div class="header-contact">
                         <ul>
-                            <li>Chào mừng đến với Foodify</li>
+                            <li *ngIf="!isLoggedIn">Chào mừng đến với Foodify</li>
+                            <li *ngIf="isLoggedIn">Chào mừng trở lại, {{ userFullName }}</li>
                             <li><i class="fa fa-phone" aria-hidden="true"></i>0917806496</li>
                         </ul>
                     </div>
@@ -25,16 +26,18 @@
                             </a>
                         </li>
                         <li class="onhover-dropdown mobile-account">
-                            <a [routerLink]="['/home/dashboard']"><i class="fa fa-user" aria-hidden="true"></i>Tài
+                            <a *ngIf="isLoggedIn" [routerLink]="['/home/dashboard']"><i class="fa fa-user"
+                                    aria-hidden="true"></i>Tài
                                 khoản</a>
+                            <a *ngIf="!isLoggedIn"><i class="fa fa-user" aria-hidden="true"></i>Tài khoản</a>
                             <ul class="onhover-show-div">
-                                <li>
+                                <li *ngIf="!isLoggedIn">
                                     <a data-lng="en" [routerLink]="['/home/login']">
                                         Đăng nhập
                                     </a>
                                 </li>
-                                <li>
-                                    <a data-lng="es" [routerLink]="['/home/login']">
+                                <li *ngIf="isLoggedIn">
+                                    <a data-lng="es" (click)="logOut()">
                                         Đăng xuất
                                     </a>
                                 </li>

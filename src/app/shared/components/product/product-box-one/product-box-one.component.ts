@@ -17,16 +17,16 @@ export class ProductBoxOneComponent implements OnInit {
   @Input() onHowerChangeImage: boolean = false; // Default False
   @Input() cartModal: boolean = false; // Default False
   @Input() loader: boolean = false;
-  
+
   @ViewChild("quickView") QuickView: QuickViewComponent;
   @ViewChild("cartModal") CartModal: CartModalComponent;
 
-  public ImageSrc : string
+  public ImageSrc: string
 
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    if(this.loader) {
+    if (this.loader) {
       setTimeout(() => { this.loader = false; }, 2000); // Skeleton Loader
     }
   }
@@ -65,7 +65,7 @@ export class ProductBoxOneComponent implements OnInit {
   }
 
   addToWishlist(product: any) {
-    this.productService.addToWishlist(product);
+    this.productService.addToWishlist(1, product);
   }
 
   addToCompare(product: any) {

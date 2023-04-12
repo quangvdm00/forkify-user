@@ -81,7 +81,7 @@ export class FourImageComponent implements OnInit {
 
   // Add to Wishlist
   addToWishlist(product: any) {
-    this.productService.addToWishlist(product);
+    this.productService.addToWishlist(1, product);
   }
 
 }
