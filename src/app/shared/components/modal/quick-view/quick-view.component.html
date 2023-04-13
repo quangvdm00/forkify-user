@@ -16,7 +16,7 @@
                         <h2>{{ product.name | titlecase }}</h2>
                         <h3>{{ product.cost - (product.cost * product.discountPercent / 100) | currency: 'VND'}}
                             <del *ngIf="product?.discountPercent > 0"><span class="money">
-                                    {{ product.cost }}
+                                    {{ product.cost | currency: 'VND' }}
                                 </span></del>
                         </h3>
 
@@ -25,23 +25,41 @@
                                 {{ category.name }}
                             </li>
                         </ul> -->
-                        <div class="border-product">
-                            <h6 class="product-title">Chi tiết sản phẩm</h6>
-                            <p>{{ product.description.substring(0, 200)+'...' }}</p>
+                        <!-- <div class="d-flex align-items-center box-cover">
+                            <div class="text-name">Chi tiết sản phẩm:</div>
+                            <div class="text-desc">{{ product.description.substring(0, 200)+'...' }}</div>
+                        </div> -->
+
+                        <div class="d-flex align-items-center flex-wrap box-cover">
+                            <div class="text-name">Loại:</div>
+                            <div *ngFor="let category of product.categories" >
+                                <div class="text-category">{{category.name}}</div>
+                            </div>
                         </div>
-                        <div class="product-description border-product">
-                            <!-- <div class="size-box" *ngIf="Size(product.variants).length">
+
+                        <div class="d-flex align-items-center box-cover">
+                            <div class="text-name">Tên shop:</div>
+                            <div class="text-desc"> {{ product.shop.name }} </div>
+                        </div>
+
+                        <div class="d-flex align-items-center box-cover">
+                            <div class="text-name">Đánh giá:</div>
+                            <div class="text-desc">{{product.averageRating}} <i class="fa fa-star" style="color: gold;" aria-hidden="true"></i></div>
+                        </div>
+
+                        <!-- <div class="product-description border-product">
+                            <div class="size-box" *ngIf="Size(product.variants).length">
                                 <ul>
                                     <li *ngFor="let category of product.categories">
                                         <a href="javascript:void(0)">{{ category.name | titlecase }}</a>
                                     </li>
                                 </ul>
-                            </div> -->
-                            <!-- <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></h5>
+                            </div>
+                            <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></h5>
                             <h5 class="avalibility" *ngIf="counter > product.stock"><span>Out of Stock</span></h5>
-                            <h6 class="product-title">quantity</h6> -->
+                            <h6 class="product-title">quantity</h6>
                             <div class="qty-box">
-                                <!-- <div class="input-group">
+                                <div class="input-group">
                                     <span class="input-group-prepend">
                                         <button type="button" class="btn quantity-left-minus" data-type="minus"
                                             (click)="decrement()">
@@ -56,9 +74,9 @@
                                             <i class="ti-angle-right"></i>
                                         </button>
                                     </span>
-                                </div> -->
+                                </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="product-buttons">
                             <a href="javascript:void(0)" class="btn btn-solid"
                                 [class.disabled]="counter > product.stock" (click)="addToCart(product)">Thêm ngay</a>

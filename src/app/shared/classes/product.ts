@@ -18,6 +18,7 @@ export interface Product {
     quantity?: number;
     tags?: any[];
     variants?: Variants[];
+    shop?: Shop
     // images?: Images[];
 
     //Back-end
