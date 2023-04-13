@@ -1,5 +1,6 @@
 import { Category } from "./category";
 import { ProductImage } from "./product-image";
+import { Shop } from "./shop";
 
 // Products
 export interface Product {
@@ -17,6 +18,7 @@ export interface Product {
     quantity?: number;
     tags?: any[];
     variants?: Variants[];
+    shop?: Shop
     // images?: Images[];
 
     //Back-end
