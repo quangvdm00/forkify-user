@@ -26,6 +26,7 @@ export class ProductService {
     private baseUrl = `${environment.foodOrderingBaseApiUrl}`
     private productUrl = `${environment.foodOrderingBaseApiUrl}/products`
     private userUrl = `${environment.foodOrderingBaseApiUrl}/users`
+    private sameShop: boolean = false;
 
     constructor(private httpClient: HttpClient,
         private toastrService: ToastrService) {
@@ -105,6 +106,14 @@ export class ProductService {
         return this.httpClient.get<StringBoolObject>(this.userUrl + `/${userId}/loves/${productId}`);
     }
 
+    deleteWishlistItem(userId: number, product: Product) {
+        return this.httpClient.delete(this.userUrl + `/${userId}/loves/${product.id}`).subscribe({
+            next: () => {
+                this.toastrService.warning(`${product.name} đã được xoá khỏi danh sách yêu thích.`);
+            }
+        })
+    }
+
     // Remove Wishlist items
     public removeWishlistItem(product: Product): any {
         const index = state.wishlist.indexOf(product);
@@ -165,26 +174,58 @@ export class ProductService {
     }
 
     // Add to Cart
-    public addToCart(product): any {
-        const cartItem = state.cart.find(item => item.id === product.id);
-        const qty = product.quantity ? product.quantity : 1;
-        const items = cartItem ? cartItem : product;
-        const stock = this.calculateStockCounts(items, qty);
+    public addToCart(product: Product): any {
+        this.sameShop = false;
+        const carts: Product[] = state.cart;
+        if (carts.length) {
+            carts.forEach((prod) => {
+                if (product.shop.name == prod.shop.name) {
+                    const cartItem = state.cart.find(item => item.id === product.id);
+                    const qty = product.quantity ? product.quantity : 1;
+                    const items = cartItem ? cartItem : product;
+                    // const stock = this.calculateStockCounts(items, qty);
 
-        if (!stock) return false
+                    // if (!stock) return false
 
-        if (cartItem) {
-            cartItem.quantity += qty
-        } else {
-            state.cart.push({
-                ...product,
-                quantity: qty
+                    if (cartItem) {
+                        cartItem.quantity += qty
+                    } else {
+                        state.cart.push({
+                            ...product,
+                            quantity: qty
+                        })
+                    }
+
+                    this.OpenCart = true; // If we use cart variation modal
+                    localStorage.setItem("cartItems", JSON.stringify(state.cart));
+                    this.sameShop = true;
+                }
             })
-        }
 
-        this.OpenCart = true; // If we use cart variation modal
-        localStorage.setItem("cartItems", JSON.stringify(state.cart));
-        return true;
+            if (!this.sameShop) {
+                this.toastrService.error("Chỉ thêm được sản phẩm cùng shop vào giỏ hàng!")
+            }
+        }
+        else {
+            const cartItem = state.cart.find(item => item.id === product.id);
+            const qty = product.quantity ? product.quantity : 1;
+            const items = cartItem ? cartItem : product;
+            // const stock = this.calculateStockCounts(items, qty);
+
+            // if (!stock) return false
+
+            if (cartItem) {
+                cartItem.quantity += qty
+            } else {
+                state.cart.push({
+                    ...product,
+                    quantity: qty
+                })
+            }
+
+            this.OpenCart = true; // If we use cart variation modal
+            localStorage.setItem("cartItems", JSON.stringify(state.cart));
+        }
     }
 
     // Update Cart Quantity
@@ -225,11 +266,11 @@ export class ProductService {
     public cartTotalAmount(): Observable<number> {
         return this.cartItems.pipe(map((product: Product[]) => {
             return product.reduce((prev, curr: Product) => {
-                let price = curr.price;
+                let cost = curr.cost;
                 if (curr.discount) {
-                    price = curr.price - (curr.price * curr.discount / 100)
+                    cost = curr.cost - (curr.cost * curr.discountPercent / 100)
                 }
-                return (prev + price * curr.quantity) * this.Currency.price;
+                return (prev + cost * curr.quantity) * this.Currency.price;
             }, 0);
         }));
     }

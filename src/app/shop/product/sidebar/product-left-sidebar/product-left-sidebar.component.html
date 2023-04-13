@@ -40,7 +40,7 @@
                                         <ng-template carouselSlide [id]="i">
                                             <div>
                                                 <img [defaultImage]="'assets/images/product/placeholder.jpg'"
-                                                    [lazyLoad]="image.imageUrl" [alt]="image.id" class="img-fluid">
+                                                    [lazyLoad]="image.imageUrl" [alt]="" class="img-fluid">
                                             </div>
                                         </ng-template>
                                     </ng-container>
@@ -64,15 +64,18 @@
                             </div>
                             <div class="col-lg-6 rtl-text">
                                 <div class="product-right">
-                                    <h2>{{ product?.name }}</h2>
-                                    <h4>
-                                        <del *ngIf="product?.discountPercent > 0">{{ product.cost | currency: 'VND'
+                                    <h2>{{ product?.name }}
+                                        <bar-rating [rate]="product.averageRating" [readOnly]="true"></bar-rating>
+                                    </h2>
+                                    <h4 *ngIf="product?.discountPercent > 0">
+                                        <del>{{ product.cost | currency: 'VND'
                                             }}</del>
-                                        <span>{{ product?.discountPercent }}% off</span>
+                                        <span>Giảm {{ product?.discountPercent }}%</span>
                                     </h4>
                                     <h3>
                                         {{ product.cost - (product.cost *
                                         product.discountPercent/100) | currency:'VND' }}
+
                                     </h3>
                                     <!-- <ul class="color-variant" *ngIf="Color(product?.variants).length">
                                         <li [class]="color" [class.active]="activeSlide == i.toString()"
@@ -142,16 +145,22 @@
                                         <div class="product-icon">
                                             <app-social></app-social>
                                             <form class="d-inline-block">
-                                                <button class="wishlist-btn" (click)="addToWishlist(product)">
+                                                <button *ngIf="isWishlist" class="wishlist-btn"
+                                                    (click)="deleteWishlistItem(product)">
+                                                    <i class="fa fa-heart"></i>
+                                                    <span class="title-font">Xoá khỏi yêu thích</span>
+                                                </button>
+                                                <button *ngIf="!isWishlist" class="wishlist-btn"
+                                                    (click)="addToWishlist(product)">
                                                     <i class="fa fa-heart"></i>
                                                     <span class="title-font">Thêm vào yêu thích</span>
                                                 </button>
                                             </form>
                                         </div>
                                     </div>
-                                    <div class="border-product">
+                                    <!-- <div class="border-product">
                                         <app-countdown [date]="'Dec 21 2023'"></app-countdown>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

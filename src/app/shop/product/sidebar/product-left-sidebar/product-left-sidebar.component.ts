@@ -4,6 +4,7 @@ import { ProductDetailsMainSlider, ProductDetailsThumbSlider } from '../../../..
 import { Product } from '../../../../shared/classes/product';
 import { ProductService } from '../../../../shared/services/product.service';
 import { SizeModalComponent } from "../../../../shared/components/modal/size-modal/size-modal.component";
+import { FirebaseService } from 'src/app/shared/services/firebase.service';
 
 @Component({
     selector: 'app-product-left-sidebar',
@@ -11,6 +12,7 @@ import { SizeModalComponent } from "../../../../shared/components/modal/size-mod
     styleUrls: ['./product-left-sidebar.component.scss']
 })
 export class ProductLeftSidebarComponent implements OnInit {
+    private userId = this.firebaseService.getUserId();
 
     public product: Product;
     public counter: number = 1;
@@ -18,6 +20,7 @@ export class ProductLeftSidebarComponent implements OnInit {
     public selectedSize: any;
     public mobileSidebar: boolean = false;
     public active = 1;
+    public isWishlist: boolean = false;
 
     @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
@@ -25,6 +28,7 @@ export class ProductLeftSidebarComponent implements OnInit {
     public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
 
     constructor(
+        private firebaseService: FirebaseService,
         private route: ActivatedRoute,
         private router: Router,
         public productService: ProductService) {
@@ -33,38 +37,43 @@ export class ProductLeftSidebarComponent implements OnInit {
 
     ngOnInit() {
         this.loadProductData();
+
     }
 
     loadProductData() {
         const id = +this.route.snapshot.paramMap.get('id');
         this.productService.getProductById(id).subscribe((product) => {
             this.product = product;
+            this.productService.checkLoveProduct(this.userId, this.product.id).subscribe((response) => {
+                this.isWishlist = response.isTrue;
+                console.log("wishlist: " + this.isWishlist)
+            })
         })
     }
 
 
 
     // Get Product Color
-    Color(variants) {
-        const uniqColor = []
-        for (let i = 0; i < Object.keys(variants).length; i++) {
-            if (uniqColor.indexOf(variants[i].color) === -1 && variants[i].color) {
-                uniqColor.push(variants[i].color)
-            }
-        }
-        return uniqColor
-    }
+    // Color(variants) {
+    //     const uniqColor = []
+    //     for (let i = 0; i < Object.keys(variants).length; i++) {
+    //         if (uniqColor.indexOf(variants[i].color) === -1 && variants[i].color) {
+    //             uniqColor.push(variants[i].color)
+    //         }
+    //     }
+    //     return uniqColor
+    // }
 
     // Get Product Size
-    Size(variants) {
-        const uniqSize = []
-        for (let i = 0; i < Object.keys(variants).length; i++) {
-            if (uniqSize.indexOf(variants[i].size) === -1 && variants[i].size) {
-                uniqSize.push(variants[i].size)
-            }
-        }
-        return uniqSize
-    }
+    // Size(variants) {
+    //     const uniqSize = []
+    //     for (let i = 0; i < Object.keys(variants).length; i++) {
+    //         if (uniqSize.indexOf(variants[i].size) === -1 && variants[i].size) {
+    //             uniqSize.push(variants[i].size)
+    //         }
+    //     }
+    //     return uniqSize
+    // }
 
     selectSize(size) {
         this.selectedSize = size;
@@ -97,8 +106,14 @@ export class ProductLeftSidebarComponent implements OnInit {
     }
 
     // Add to Wishlist
-    addToWishlist(product: any) {
-        this.productService.addToWishlist(1, product);
+    addToWishlist(product: Product) {
+        this.productService.addToWishlist(this.userId, product);
+        this.isWishlist = true;
+    }
+
+    deleteWishlistItem(product: Product) {
+        this.productService.deleteWishlistItem(this.userId, product);
+        this.isWishlist = false;
     }
 
     // Toggle Mobile Sidebar

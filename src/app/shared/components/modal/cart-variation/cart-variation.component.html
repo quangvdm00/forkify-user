@@ -13,23 +13,24 @@
             <ul class="cart_product">
                 <li *ngFor="let product of products">
                     <div class="media">
-                        <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]">
-                            <img class="me-3" [src]="product.images[0].src" [alt]="product.images[0].alt">
+                        <a [routerLink]="['/shop/products', product.id]">
+                            <img class="me-3" [src]="product.images[0].imageUrl" [alt]="product.images[0].id">
                         </a>
                         <div class="media-body">
-                            <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]">
-                                <h4>{{ product?.title | titlecase }}</h4>
+                            <a [routerLink]="['/shop/products', product.id]">
+                                <h4>{{ product?.name | titlecase }}</h4>
                             </a>
                             <h4>
                                 <span>
-                                {{ product?.quantity }} x 
-                                {{ product?.price * productService?.Currency.price | discount:product | currency:productService?.Currency.currency:'symbol' }}
+                                    {{ product?.quantity }} x
+                                    {{ product?.cost - (product?.cost * product?.discountPercent / 100) |
+                                    currency:'VND' }}
                                 </span>
                             </h4>
                         </div>
                     </div>
                     <div class="close-circle">
-                        <a href="javascript:void(0)" (click)="removeItem(product)">
+                        <a (click)="removeItem(product)">
                             <i class="ti-trash" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -39,24 +40,24 @@
                 <li>
                     <div class="total">
                         <h5>
-                            subtotal :
-                            <span>{{ getTotal | async | currency:productService?.Currency.currency:'symbol' }}</span>
+                            Tổng :
+                            <span>{{ getTotal | async | currency:'VND' }}</span>
                         </h5>
                     </div>
                 </li>
                 <li>
                     <div class="buttons">
-                        <a [routerLink]="['/shop/cart']" class="btn btn-solid btn-xs view-cart">view cart</a>
-                        <a [routerLink]="['/shop/checkout']" class="btn btn-solid btn-xs checkout">checkout</a>
+                        <a [routerLink]="['/shop/cart']" class="btn btn-solid btn-xs view-cart">Xem giỏ hàng</a>
+                        <a [routerLink]="['/shop/checkout']" class="btn btn-solid btn-xs checkout">Thanh toán</a>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="col-sm-12 empty-cart-cls text-start" *ngIf="!products.length">
             <h4 class="mt-3">
-              <strong>Your Cart is Empty</strong>
+                <strong>Giỏ hàng trống</strong>
             </h4>
-            <a [routerLink]="['/shop/collection/left/sidebar']" class="btn btn-solid">continue shopping</a>
+            <a [routerLink]="['/home']" class="btn btn-solid">Tiếp tục mua sắm</a>
         </div>
     </div>
 </div>

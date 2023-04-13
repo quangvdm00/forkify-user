@@ -17,7 +17,7 @@ export class ProductBoxVerticalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.product);
+
     }
 
     // Get Product Color

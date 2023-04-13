@@ -78,7 +78,7 @@
                     <div class="theme-card center-align">
                         <div class="offer-slider">
                             <div class="sec-1">
-                                <div class="product-box2" *ngFor="let product of bestSellingProducts | slice:0:2">
+                                <div class="product-box2" *ngFor="let product of bestSellingProducts | slice:1:3">
                                     <app-product-box-vertical [product]="product" [currency]="productService?.Currency">
                                     </app-product-box-vertical>
                                 </div>
@@ -91,7 +91,7 @@
                         <div class="offer-slider">
                             <div>
                                 <div class="product-box product-wrap"
-                                    *ngFor="let product of bestSellingProducts | slice:1:2">
+                                    *ngFor="let product of bestSellingProducts | slice:0:1">
                                     <app-product-box-two [product]="product" [currency]="productService?.Currency">
                                     </app-product-box-two>
                                 </div>
@@ -103,7 +103,7 @@
                     <div class="theme-card center-align">
                         <div class="offer-slider">
                             <div class="sec-1">
-                                <div class="product-box2" *ngFor="let product of bestSellingProducts | slice:2:4">
+                                <div class="product-box2" *ngFor="let product of bestSellingProducts | slice:3:5">
                                     <app-product-box-vertical [product]="product" [currency]="productService?.Currency">
                                     </app-product-box-vertical>
                                 </div>
@@ -118,23 +118,23 @@
 <!-- product-box slider end -->
 
 <!-- blog section start-->
-<!--<section class="blog section-b-space pt-0">-->
-<!--    <div class="container">-->
-<!--        <div class="row">-->
-<!--            <div class="col">-->
-<!--                <div class="title1 section-t-space">-->
-<!--                    <h4>Recent Story</h4>-->
-<!--                    <h2 class="title-inner1">from the blog</h2>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="row">-->
-<!--            <div class="col-md-12">-->
-<!--                <app-blog [blogs]="blogs"></app-blog>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</section>-->
+<!-- <section class="blog section-b-space pt-0">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="title1 section-t-space">
+                    <h4>Recent Story</h4>
+                    <h2 class="title-inner1">from the blog</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <app-blog [blogs]="blogs"></app-blog>
+            </div>
+        </div>
+    </div>
+</section> -->
 <!-- blog section end -->
 
 <!-- Cart Open To Right Side-->

@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-lg-6 rtl-text">
                     <div class="product-right">
-                        <h2>{{ product.title | titlecase }}</h2>
+                        <h2>{{ product.name | titlecase }}</h2>
                         <h3>{{ product.cost - (product.cost * product.discountPercent / 100) | currency: 'VND'}}
                             <del *ngIf="product?.discountPercent > 0"><span class="money">
                                     {{ product.cost }}

@@ -53,6 +53,9 @@ export class UserService {
     return this.httpClient.get<ResponseProducts>(this.baseUrl + `/${userId}/loves`)
   }
 
+  deleteLoveProductByUser(userId: number, productId: number) {
+    return this.httpClient.delete(this.baseUrl + `/${userId}/loves/${productId}`)
+  }
 }
 
 interface ResponseAddresses {

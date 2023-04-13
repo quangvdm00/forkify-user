@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {TeamSlider, TestimonialSlider} from '../../shared/data/slider';
+import { Component, OnInit } from '@angular/core';
+import { TeamSlider, TestimonialSlider } from '../../shared/data/slider';
 
 @Component({
     selector: 'app-about-us',
@@ -19,43 +19,38 @@ export class AboutUsComponent implements OnInit {
 
     // Testimonial Carousel
     public testimonial = [{
-        image: 'assets/images/testimonial/1.jpg',
-        name: 'Mark jkcno',
-        designation: 'Designer',
-        description: 'you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings.',
+        image: 'assets/images/testimonial/quoc_duong.png',
+        name: 'Dương Nguyễn Đức Quốc',
+        designation: 'Mentor',
+        description: 'Là một trong 2 mentor của đồ án, hỗ trợ công việc cho team, giúp team chọn ra những công nghệ và hướng đi phù hợp với dự án. Bên cạnh đó, anh luôn bám sát dự án, giúp dự án hoàn thành như dự kiến',
     }, {
-        image: 'assets/images/testimonial/2.jpg',
-        name: 'Adegoke Yusuff',
-        designation: 'Content Writer',
-        description: 'you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings.',
-    }, {
-        image: 'assets/images/testimonial/1.jpg',
-        name: 'John Shipmen',
-        designation: 'Lead Developer',
-        description: 'you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings.',
+        image: 'assets/images/testimonial/thach.png',
+        name: 'Lê Quang Thạch',
+        designation: 'Mentor',
+        description: 'Mentor hỗ trợ kỹ thuật cho team, giúp team giải quyết các vấn đề gặp phải và đưa ra các giải pháp phù hợp. Ngoài ra, anh còn là người đôn đốc team hoàn thành dự án đúng hạn.',
     }]
 
     // Team
     public team = [{
-        image: 'assets/images/team/1.jpg',
-        name: 'Mark jkcno',
-        designation: 'Designer'
+        image: 'assets/images/team/khue.png',
+        name: 'Nguyễn Hà Khuê',
+        designation: 'Team Leader'
     }, {
-        image: 'assets/images/team/2.jpg',
-        name: 'Adegoke Yusuff',
-        designation: 'Content Writer'
+        image: 'assets/images/team/quang.png',
+        name: 'Võ Đình Minh Quang',
+        designation: 'Team Sub-leader'
     }, {
         image: 'assets/images/team/3.jpg',
-        name: 'John Shipmen',
-        designation: 'Lead Developer'
+        name: 'Phan Hữu Lợi',
+        designation: 'Team member'
     }, {
         image: 'assets/images/team/4.jpg',
-        name: 'Hileri Keol',
-        designation: 'CEO & Founder at Company'
+        name: 'Nguyễn Đức Đạt',
+        designation: 'Team member'
     }, {
-        image: 'assets/images/team/3.jpg',
-        name: 'John Shipmen',
-        designation: 'Lead Developer'
+        image: 'assets/images/team/hoang.png',
+        name: 'Trần Ngọc Hoàng',
+        designation: 'Team member'
     }]
 
 }
