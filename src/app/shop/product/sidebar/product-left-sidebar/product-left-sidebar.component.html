@@ -138,8 +138,23 @@
                                     </div>
                                     <div class="border-product">
                                         <h6 class="product-title">Chi tiết sản phẩm</h6>
-                                        <p>{{ product.description.substring(0, 200) + '...' }}</p>
+                                        <p class="text-123">{{ product.description.substring(0, 200) + '...' }}</p>
                                     </div>
+
+                                    <div class="mlem-product">
+                                        <h6 class="product-title mb-1">Loại sản phẩm</h6>
+                                        <div class="d-flex">
+                                            <div *ngFor="let category of product.categories">
+                                                <p class="text-category">{{ category.name }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sold-box">
+                                        <h6 class="product-title">Đã bán:</h6>
+                                        <p class="text-123">{{product.sold}} sản phẩm</p>
+                                    </div>
+
                                     <div class="border-product">
                                         <h6 class="product-title">Chia sẻ</h6>
                                         <div class="product-icon">

@@ -28,17 +28,20 @@
     </div>
 </div>
 <div class="product-detail text-center ">
-    <div class="rating">
-        <bar-rating [rate]="product.averageRating" [readOnly]="true" class="text-center pro-rating"></bar-rating>
+    <div class="product-link-name">
+        <a  [routerLink]="['/shop/products/', product.id]">
+            {{ product.name | titlecase }}
+        </a>
     </div>
-    <a [routerLink]="['/shop/products/', product.id]">
-        <h6>{{ product.name | titlecase }}</h6>
-    </a>
+    
     <h4>
         <!-- {{ product?.price * currency?.price | discount:product | currency:currency?.currency:'symbol' }} -->
         {{ product?.cost - (product.cost * product.discountPercent / 100) | currency:'VND'}}
         <del *ngIf="product?.discountPercent > 0"><span class="money"> {{ product.cost | currency:'VND' }}</span></del>
     </h4>
+    <div class="rating mt-2">
+        <bar-rating [rate]="product.averageRating" [readOnly]="true" class="text-center pro-rating"></bar-rating>
+    </div>
     <!-- <ul class="color-variant" *ngIf="Color(product?.variants).length">
         <li [class]="color" *ngFor="let color of Color(product?.variants)" [ngStyle]="{'background-color': color}"
             (click)="ChangeVariants(color, product)">
