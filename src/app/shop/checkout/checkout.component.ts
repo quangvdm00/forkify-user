@@ -1,16 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 // import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
-import {environment} from '../../../environments/environment';
-import {Product} from "../../shared/classes/product";
-import {ProductService} from "../../shared/services/product.service";
-import {OrderService} from "../../shared/services/order.service";
-import {OrderInfo} from "../../shared/classes/OrderInfo";
-import {PaymentInfo} from "../../shared/classes/payment-info";
-import {ProductDto} from "../../shared/classes/product-dto";
-import {Router} from "@angular/router";
-import {randomUUID} from "crypto";
+import { environment } from '../../../environments/environment';
+import { Product } from "../../shared/classes/product";
+import { ProductService } from "../../shared/services/product.service";
+import { OrderService } from "../../shared/services/order.service";
+import { OrderInfo } from "../../shared/classes/OrderInfo";
+import { PaymentInfo } from "../../shared/classes/payment-info";
+import { ProductDto } from "../../shared/classes/product-dto";
+import { Router } from "@angular/router";
+import { randomUUID } from "crypto";
+import { Address } from 'src/app/shared/classes/address';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-checkout',
@@ -18,33 +20,46 @@ import {randomUUID} from "crypto";
     styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
+    private userId = Number(localStorage.getItem('user-id'))
+
+    addresses: Address[] = [];
+    isAddress: boolean = false;
+    userName: string = '';
 
     public checkoutForm: UntypedFormGroup;
     public products: Product[] = [];
     // public payPalConfig ? : IPayPalConfig;
-    public payment: string = 'Stripe';
+    public payment: string = 'ZaloPay';
     public amount: any;
     public paymentUrl: string;
     isGenerated = false;
 
     constructor(private fb: UntypedFormBuilder,
-                public productService: ProductService,
-                private orderService: OrderService, private router: Router
+        public productService: ProductService,
+        private orderService: OrderService,
+        private userService: UserService,
+        private router: Router
     ) {
         this.checkoutForm = this.fb.group({
-            firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
-            lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
-            phone: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-            email: ['', [Validators.required, Validators.email]],
-            address: ['', [Validators.required, Validators.maxLength(50)]],
-            country: ['', Validators.required],
-            town: ['', Validators.required],
-            state: ['', Validators.required],
-            postalcode: ['', Validators.required]
+            // firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
+            // lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
+            // phone: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+            // email: ['', [Validators.required, Validators.email]],
+            // address: ['', [Validators.required, Validators.maxLength(50)]],
+            address: ['', Validators.required],
+            // town: ['', Validators.required],
+            // state: ['', Validators.required],
+            // postalcode: ['', Validators.required]
         });
     }
 
     ngOnInit(): void {
+        this.userService.getUserById(this.userId).subscribe((response) => {
+            this.userName = response.fullName
+        })
+        this.userService.getAddressesByUser(this.userId).subscribe((response) => {
+            this.addresses = response.addresses;
+        })
         this.productService.cartItems.subscribe(response => this.products = response);
         this.getTotal.subscribe(amount => this.amount = amount);
         this.initConfig();
@@ -98,12 +113,12 @@ export class CheckoutComponent implements OnInit {
         // }, 2000);
 
         this.orderService.createZaloPayOrder(paymentInfo, this.checkoutForm.value).subscribe({
-                next: data => {
-                    this.paymentUrl = data.paymentOrderUrl;
-                    console.log(data.orderToken);
-                },
-                error: err => console.log(err)
-            }
+            next: data => {
+                this.paymentUrl = data.paymentOrderUrl;
+                console.log(data.orderToken);
+            },
+            error: err => console.log(err)
+        }
         );
 
         setTimeout(() => {
@@ -168,4 +183,14 @@ export class CheckoutComponent implements OnInit {
     checkPaymentStatus() {
 
     }
+
+    onAddressSelected() {
+        this.isAddress = false;
+        if (this.shippingAddress) {
+            this.isAddress = true;
+            console.log(this.shippingAddress + ', Đà Nẵng')
+        }
+    }
+
+    get shippingAddress() { return this.checkoutForm.get('address').value }
 }

@@ -13,6 +13,8 @@ export class AboutUsComponent implements OnInit {
 
     ngOnInit(): void {
     }
+    public content = "Foodify là một trong những dự án mà team Pyramide đã chọn khi bắt đầu quá trình chọn lọc đề tài cho đồ án tốt nghiệp của tụi mình. Trải qua nhiều quá trình, chúng mình đã đưa ra sản phẩm đúng tiến trình đề ra. Các thành viên đã luôn cố gắng không ngừng nghỉ để hoàn thành tốt các phần việc của mình." +
+        " Từ việc bắt đầu chọn công nghệ, nghiên cứu cơ sở dữ liệu và bắt tay vào code, test và hoàn thiện sản phẩm, chúng mình luôn mong muốn chọn được những điều tốt nhất cho mọi người."
 
     public TeamSliderConfig: any = TeamSlider;
     public TestimonialSliderConfig: any = TestimonialSlider;

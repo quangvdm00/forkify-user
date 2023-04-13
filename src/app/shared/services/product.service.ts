@@ -19,7 +19,7 @@ const state = {
 })
 export class ProductService {
 
-    public Currency = { name: 'Dollar', currency: 'USD', price: 1 } // Default Currency
+    public Currency = { name: 'VND', currency: 'VND', price: 1 } // Default Currency
     public OpenCart: boolean = false;
     public Products
 

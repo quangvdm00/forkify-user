@@ -1,11 +1,11 @@
-<app-breadcrumb [title]="'Cart'" [breadcrumb]="'Cart'"></app-breadcrumb>
+<app-breadcrumb [title]="'Giỏ hàng'" [breadcrumb]="'Giỏ hàng'"></app-breadcrumb>
 <!-- section start -->
 <section class="cart-section section-b-space">
     <div class="container">
         <div class="col-sm-12 empty-cart-cls text-center" *ngIf="!products.length">
             <img src="assets/images/icon-empty-cart.png" class="img-fluid mb-4">
             <h3><strong>GIỎ HÀNG TRỐNG</strong></h3>
-            <p style="font-family: Montserrat; font-size: 18px;">Mua cái gì đó đi, có nhiều thứ cần phải mua mà :)</p>
+            <h4>Mua cái gì đó đi, có nhiều thứ cần phải mua mà :)</h4>
         </div>
         <div class="row" *ngIf="products.length">
             <div class="col-sm-12">
