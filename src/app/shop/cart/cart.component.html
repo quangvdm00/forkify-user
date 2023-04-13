@@ -62,20 +62,20 @@
                             <td>
                                 <div class="qty-box">
                                     <div class="input-group">
-                                        <span class="input-group-prepend">
+                                        <div class="input-plus-minus input-minus">
                                             <button type="button" class="btn quantity-left-minus" data-type="minus"
                                                 (click)="decrement(product)">
                                                 <i class="ti-angle-left"></i>
                                             </button>
-                                        </span>
+                                        </div>
                                         <input type="text" name="quantity" class="form-control input-number" disabled
                                             [(ngModel)]="product.quantity">
-                                        <span class="input-group-prepend">
+                                        <div class="input-plus-minus input-plus">
                                             <button type="button" class="btn quantity-right-plus" data-type="plus"
                                                 (click)="increment(product)">
                                                 <i class="ti-angle-right"></i>
                                             </button>
-                                        </span>
+                                        </div>
                                     </div>
                                 </div>
                             </td>
