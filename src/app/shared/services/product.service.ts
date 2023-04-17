@@ -12,7 +12,7 @@ const state = {
     wishlist: JSON.parse(localStorage['wishlistItems'] || '[]'),
     compare: JSON.parse(localStorage['compareItems'] || '[]'),
     cart: JSON.parse(localStorage['cartItems'] || '[]')
-}
+};
 
 @Injectable({
     providedIn: 'root'
@@ -21,9 +21,9 @@ export class ProductService {
 
     public Currency = { name: 'VND', currency: 'VND', price: 1 } // Default Currency
     public OpenCart: boolean = false;
-    public Products
+    public Products;
+    private baseUrl = environment.foodOrderingBaseApiUrl;
 
-    private baseUrl = `${environment.foodOrderingBaseApiUrl}`
     private productUrl = `${environment.foodOrderingBaseApiUrl}/products`
     private userUrl = `${environment.foodOrderingBaseApiUrl}/users`
     private sameShop: boolean = false;
@@ -39,12 +39,18 @@ export class ProductService {
     */
 
     // Product
-    private get products(): Observable<Product[]> {
-        this.Products = this.httpClient.get<Product[]>(this.baseUrl + '/v1/products/enable').pipe(map(data => data));
+    // this.baseUrl + '/products'
+    // assets/data/products.json
+    private get products(): Observable<GetResponseProduct> {
+        this.Products = this.httpClient.get<GetResponseProduct>(this.baseUrl + '/products').pipe(map(data => data));
+        // this.Products = this.http.get<Product[]>('assets/data/products.json').pipe(map(data => data));
+
         this.Products.subscribe(next => {
             localStorage['products'] = JSON.stringify(next);
         });
-        return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
+        this.Products = this.Products.pipe(
+            startWith(JSON.parse(localStorage['products'] || '[]')));
+        return this.Products;
     }
 
     //Get Product Pageable
@@ -53,15 +59,15 @@ export class ProductService {
     }
 
     // Get Products
-    public get getProducts(): Observable<Product[]> {
+    public get getProducts(): Observable<GetResponseProduct> {
         return this.products;
     }
 
     // Get Products By Slug
     public getProductBySlug(slug: string): Observable<Product> {
         return this.products.pipe(map(items => {
-            return items.find((item: any) => {
-                return item.title.replace(' ', '-') === slug;
+            return items.products.find((item: any) => {
+                return item.name.replace(' ', '-') === slug;
             });
         }));
     }
@@ -119,7 +125,7 @@ export class ProductService {
         const index = state.wishlist.indexOf(product);
         state.wishlist.splice(index, 1);
         localStorage.setItem("wishlistItems", JSON.stringify(state.wishlist));
-        return true
+        return true;
     }
 
     /*
@@ -143,11 +149,11 @@ export class ProductService {
         if (!compareItem) {
             state.compare.push({
                 ...product
-            })
+            });
         }
         this.toastrService.success('Product has been added in compare.');
         localStorage.setItem("compareItems", JSON.stringify(state.compare));
-        return true
+        return true;
     }
 
     // Remove Compare items
@@ -239,7 +245,7 @@ export class ProductService {
                     state.cart[index].quantity = qty
                 }
                 localStorage.setItem("cartItems", JSON.stringify(state.cart));
-                return true
+                return true;
             }
         })
     }
@@ -250,9 +256,9 @@ export class ProductService {
         const stock = product.stock
         if (stock < qty || stock == 0) {
             this.toastrService.error('You can not add more items than available. In stock ' + stock + ' items.');
-            return false
+            return false;
         }
-        return true
+        return true;
     }
 
     // Remove Cart items
@@ -260,7 +266,7 @@ export class ProductService {
         const index = state.cart.indexOf(product);
         state.cart.splice(index, 1);
         localStorage.setItem("cartItems", JSON.stringify(state.cart));
-        return true
+        return true;
     }
 
     // Total amount
@@ -283,18 +289,20 @@ export class ProductService {
     */
 
     // Get Product Filter
-    public filterProducts(filter: any): Observable<Product[]> {
+    public filterProducts(filter?: any): Observable<Product[]> {
         return this.products.pipe(map(product =>
-            product.filter((item: Product) => {
-                if (!filter.length) return true
+            product.products.filter((item: Product) => {
+                if (!filter.length) {
+                    return true;
+                }
                 const Tags = filter.some((prev) => { // Match Tags
-                    if (item.tags) {
-                        if (item.tags.includes(prev)) {
-                            return prev
+                    if (item.categories) {
+                        if (item.categories.includes(prev)) {
+                            return prev;
                         }
                     }
-                })
-                return Tags
+                });
+                return Tags;
             })
         ));
     }
@@ -313,40 +321,40 @@ export class ProductService {
             })
         } else if (payload === 'a-z') {
             return products.sort((a, b) => {
-                if (a.title < b.title) {
+                if (a.name < b.name) {
                     return -1;
-                } else if (a.title > b.title) {
+                } else if (a.name > b.name) {
                     return 1;
                 }
                 return 0;
             })
         } else if (payload === 'z-a') {
             return products.sort((a, b) => {
-                if (a.title > b.title) {
+                if (a.name > b.name) {
                     return -1;
-                } else if (a.title < b.title) {
+                } else if (a.name < b.name) {
                     return 1;
                 }
                 return 0;
             })
         } else if (payload === 'low') {
             return products.sort((a, b) => {
-                if (a.price < b.price) {
+                if (a.cost < b.cost) {
                     return -1;
-                } else if (a.price > b.price) {
+                } else if (a.cost > b.cost) {
                     return 1;
                 }
                 return 0;
             })
         } else if (payload === 'high') {
             return products.sort((a, b) => {
-                if (a.price > b.price) {
+                if (a.cost > b.cost) {
                     return -1;
-                } else if (a.price < b.price) {
+                } else if (a.cost < b.cost) {
                     return 1;
                 }
                 return 0;
-            })
+            });
         }
     }
 
@@ -406,6 +414,19 @@ export class ProductService {
         return this.httpClient.get<Product>(this.productUrl + `/${id}`);
     }
 
+}
+
+export interface GetResponseProduct {
+    products: Product[];
+    param: Page[];
+}
+
+export interface Page {
+    pageNo: number;
+    pageSize: number;
+    totalElements: number;
+    totalPages: number;
+    last: boolean;
 }
 
 interface GetResponseProducts {

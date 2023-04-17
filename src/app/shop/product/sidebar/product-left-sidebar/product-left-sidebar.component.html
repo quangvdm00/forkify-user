@@ -1,4 +1,4 @@
-<app-breadcrumb [title]="product?.title" [breadcrumb]="'Product'"></app-breadcrumb>
+<app-breadcrumb [title]="product?.name" [breadcrumb]="'Product'"></app-breadcrumb>
 <!-- section start -->
 <section class="section-b-space">
     <div class="collection-wrapper">
@@ -17,7 +17,8 @@
                         <div class="collection-filter-block">
                             <app-services></app-services>
                         </div>
-                        <app-product-box-vertical-slider [title]="'New product'" [type]="product?.type">
+                        <app-product-box-vertical-slider [title]="'New product'"
+                            [category]="product?.categories[0].name">
                         </app-product-box-vertical-slider>
                     </div>
                 </div>
@@ -40,7 +41,7 @@
                                         <ng-template carouselSlide [id]="i">
                                             <div>
                                                 <img [defaultImage]="'assets/images/product/placeholder.jpg'"
-                                                    [lazyLoad]="image.imageUrl" [alt]="" class="img-fluid">
+                                                    [lazyLoad]="image.imageUrl" class="img-fluid">
                                             </div>
                                         </ng-template>
                                     </ng-container>
@@ -52,8 +53,7 @@
                                                 <ng-template carouselSlide [id]="i">
                                                     <div class="owl-thumb" [class.active]="i == activeSlide">
                                                         <img [defaultImage]="'assets/images/product/placeholder.jpg'"
-                                                            [lazyLoad]="image.imageUrl" [alt]="image.id"
-                                                            class="img-fluid"
+                                                            [lazyLoad]="image.imageUrl" class="img-fluid"
                                                             (click)="owlCar.to(activeSlide = i.toString())">
                                                     </div>
                                                 </ng-template>
@@ -79,35 +79,34 @@
                                     </h3>
                                     <!-- <ul class="color-variant" *ngIf="Color(product?.variants).length">
                                         <li [class]="color" [class.active]="activeSlide == i.toString()"
-                                            *ngFor="let color of Color(product?.variants); index as i"
+                                            *ngFor="let color of Color(product?.categories); index as i"
                                             [ngStyle]="{'background-color': color}"
                                             (click)="owlCar.to(activeSlide = i.toString())">
                                         </li>
-                                    </ul> -->
-                                    <!-- <app-stock-inventory [stock]="product?.stock"></app-stock-inventory> -->
-                                    <!-- <div class="product-description border-product">
-                                        <h6 class="product-title size-text" *ngIf="Size(product.variants).length">
+                                    </ul>
+<!--                                    <app-stock-inventory [stock]="product?.stock"></app-stock-inventory>-->
+                                    <div class="product-description border-product">
+                                        <h6 class="product-title size-text" *ngIf="Size(product.categories).length">
                                             select size
                                             <span>
                                                 <a href="javascrip:void(0)" (click)="SizeChart.openModal()">size
                                                     chart</a>
                                             </span>
                                         </h6>
-                                        <div class="size-box" *ngIf="Size(product.variants).length">
+                                        <div class="size-box" *ngIf="Size(product.categories).length">
                                             <ul>
                                                 <li [class.active]="selectedSize == size"
-                                                    *ngFor="let size of Size(product.variants)">
+                                                    *ngFor="let size of Size(product.categories)">
                                                     <a href="javascript:void(0)" (click)="selectSize(size)">
                                                         {{ size | titlecase }}
                                                     </a>
                                                 </li>
                                             </ul>
                                         </div>
-                                        <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span>
-                                        </h5>
-                                        <h5 class="avalibility" *ngIf="counter > product.stock">
-                                            <span>Out of Stock</span>
-                                        </h5>
+                                        <!--                                        <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span>-->
+                                        <!--                                        </h5>-->
+                                        <!--                                        <h5 class="avalibility" *ngIf="counter > product.stock">-->
+                                        <!--                                            <span>Out of Stock</span></h5>-->
                                         <h6 class="product-title">quantity</h6>
                                         <div class="qty-box">
                                             <div class="input-group">
@@ -308,7 +307,7 @@
             </div>
         </div>
     </div>
-    <!-- <app-related-product [type]="product?.categories[0].name"></app-related-product> -->
+    <app-related-product [type]="product?.categories[0].name"></app-related-product>
 </section>
 <app-size-modal #sizeChart [product]="product"></app-size-modal>
 <!-- Section ends -->

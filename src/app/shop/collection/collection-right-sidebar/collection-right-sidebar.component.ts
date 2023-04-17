@@ -50,10 +50,10 @@ export class CollectionRightSidebarComponent implements OnInit {
           
           // Category Filter
           if(params.category)
-            this.products = this.products.filter(item => item.type == this.category);
+            this.products = this.products.filter(item => item.categories[0] === this.category);
 
           // Price Filter
-          this.products = this.products.filter(item => item.price >= this.minPrice && item.price <= this.maxPrice) 
+          this.products = this.products.filter(item => item.cost >= this.minPrice && item.cost <= this.maxPrice);
     
           // Paginate Products
           this.paginate = this.productService.getPager(this.products.length, +this.pageNo);     // get paginate object from service

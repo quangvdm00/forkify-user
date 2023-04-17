@@ -21,18 +21,18 @@ export class SizeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get filterbysize() {
-    const uniqueSize = []
-    this.products.filter((product) => {
-      product.variants.filter((variant) => {
-        if (variant.size) {
-          const index = uniqueSize.indexOf(variant.size)
-          if (index === -1) uniqueSize.push(variant.size)
-        }
-      })
-    })
-    return uniqueSize
-  }
+  // get filterbysize() {
+  //   const uniqueSize = []
+  //   this.products.filter((product) => {
+  //     product.categories.filter((variant) => {
+  //       if (variant.size) {
+  //         const index = uniqueSize.indexOf(variant.size)
+  //         if (index === -1) uniqueSize.push(variant.size)
+  //       }
+  //     })
+  //   })
+  //   return uniqueSize
+  // }
 
   appliedFilter(event) {
     let index = this.size.indexOf(event.target.value);  // checked and unchecked value

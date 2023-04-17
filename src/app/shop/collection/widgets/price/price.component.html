@@ -5,9 +5,9 @@
         <div class="collection-brand-filter">
             <div class="mt-2">
                 <ng5-slider 
-                    [(value)]="min" 
+                    [(value)]="min"
                     [(highValue)]="max" 
-                    [options]="options" 
+                    [options]="options"
                     (userChangeEnd)="appliedFilter($event)"
                     *ngIf="isBrowser">
                 </ng5-slider>

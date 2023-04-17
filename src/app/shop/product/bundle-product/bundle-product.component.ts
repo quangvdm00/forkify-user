@@ -12,7 +12,21 @@ import { SizeModalComponent } from "../../../shared/components/modal/size-modal/
 })
 export class BundleProductComponent implements OnInit {
 
-  public product: Product;
+  public product: Product = {
+    averageRating: 0,
+    categories: [],
+    cost: 0,
+    description: "",
+    discountPercent: 0,
+    id: 0,
+    images: [],
+    isEnabled: false,
+    name: "",
+    quantity: 0,
+    reviewCount: 0,
+    shop: null,
+    sold: 0
+  };
   public counter: number = 1;
   public activeSlide: any = 0;
   public selectedSize: any;

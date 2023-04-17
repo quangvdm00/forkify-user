@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
-import { ProductService } from "../../../shared/services/product.service";
+import { ProductService } from '../../../shared/services/product.service';
 import { Product } from '../../../shared/classes/product';
 
 @Component({
@@ -18,7 +18,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
     public colors: any[] = [];
     public size: any[] = [];
     public minPrice: number = 0;
-    public maxPrice: number = 1200;
+    public maxPrice: number = 100000;
     public tags: any[] = [];
     public category: string;
     public pageNo: number = 1;
@@ -31,35 +31,50 @@ export class CollectionLeftSidebarComponent implements OnInit {
         private viewScroller: ViewportScroller, public productService: ProductService) {
         // Get Query params..
         this.route.queryParams.subscribe(params => {
-
-            this.brands = params.brand ? params.brand.split(",") : [];
-            this.colors = params.color ? params.color.split(",") : [];
-            this.size = params.size ? params.size.split(",") : [];
+            //
+            this.brands = params.shop ? params.shop.split(",") : [];
+            // this.colors = params.color ? params.color.split(",") : [];
+            // this.size = params.size ? params.size.split(",") : [];
             this.minPrice = params.minPrice ? params.minPrice : this.minPrice;
             this.maxPrice = params.maxPrice ? params.maxPrice : this.maxPrice;
-            this.tags = [...this.brands, ...this.colors, ...this.size]; // All Tags Array
 
             this.category = params.category ? params.category : null;
             this.sortBy = params.sortBy ? params.sortBy : 'ascending';
             this.pageNo = params.page ? params.page : this.pageNo;
 
+            // this.tags = [...this.brands];
             // Get Filtered Products..
             this.productService.filterProducts(this.tags).subscribe(response => {
                 // Sorting Filter
                 this.products = this.productService.sortProducts(response, this.sortBy);
+
                 // Category Filter
                 if (params.category)
-                    this.products = this.products.filter(item => item.type == this.category);
+                    this.products = this.products.filter(item => {
+                        if (item.categories.map(cat => cat.name).includes(this.category)) {
+                            return true;
+                        }
+                        return false;
+                    });
+
+                if (params.shop) {
+                    this.products = this.products.filter(item => this.brands.some(brand => brand === item.shop.name));
+                }
+
                 // Price Filter
-                this.products = this.products.filter(item => item.cost >= this.minPrice && item.price <= this.maxPrice)
+                this.products = this.products.filter(item => item.cost >= this.minPrice && item.cost <= this.maxPrice);
+
                 // Paginate Products
                 this.paginate = this.productService.getPager(this.products.length, +this.pageNo);     // get paginate object from service
                 this.products = this.products.slice(this.paginate.startIndex, this.paginate.endIndex + 1); // get current page of items
-            })
-        })
+            });
+        });
     }
 
     ngOnInit(): void {
+        this.productService.getProducts.subscribe(
+            data => this.products = data.products
+        );
     }
 
 
@@ -70,11 +85,19 @@ export class CollectionLeftSidebarComponent implements OnInit {
             relativeTo: this.route,
             queryParams: tags,
             queryParamsHandling: 'merge', // preserve the existing query params in the route
-            skipLocationChange: false  // do trigger navigation
+            skipLocationChange: false, // do trigger navigation
         }).finally(() => {
             this.viewScroller.setOffset([120, 120]);
-            this.viewScroller.scrollToAnchor('products'); // Anchore Link
+            this.viewScroller.scrollToAnchor('products'); // Anchor Link
         });
+
+        // if (tags.shop === undefined) {
+        //     console.log(this.route);
+        //     this.router.navigate([], {
+        //         relativeTo: this.route,
+        //         queryParams: undefined
+        //     });
+        // }
     }
 
     // SortBy Filter
@@ -92,7 +115,6 @@ export class CollectionLeftSidebarComponent implements OnInit {
 
     // Remove Tag
     removeTag(tag) {
-
         this.brands = this.brands.filter(val => val !== tag);
         this.colors = this.colors.filter(val => val !== tag);
         this.size = this.size.filter(val => val !== tag);

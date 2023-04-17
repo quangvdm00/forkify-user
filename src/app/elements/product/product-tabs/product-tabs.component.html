@@ -17,8 +17,8 @@
               <div class="no-slider row">
                 <ng-container *ngFor="let product of products | slice:0:8">
                   <div class="product-box">
-                    <app-product-box-one 
-                      [product]="product" 
+                    <app-product-box-one
+                      [product]="product"
                       [currency]="productService?.Currency"
                       [thumbnail]="true"
                       [cartModal]="true">

@@ -21,18 +21,18 @@ export class ColorsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get filterbycolor() {
-    const uniqueColors = []
-    this.products.filter((product) => {
-      product.variants.filter((variant) => {
-        if (variant.color) {
-          const index = uniqueColors.indexOf(variant.color)
-          if (index === -1) uniqueColors.push(variant.color)
-        }
-      })
-    })
-    return uniqueColors
-  }
+  // get filterbycolor() {
+  //   const uniqueColors = []
+  //   this.products.filter((product) => {
+  //     product.categories.filter((variant) => {
+  //       if (variant.color) {
+  //         const index = uniqueColors.indexOf(variant.color)
+  //         if (index === -1) uniqueColors.push(variant.color)
+  //       }
+  //     })
+  //   })
+  //   return uniqueColors
+  // }
 
   appliedFilter(event) {
     let index = this.colors.indexOf(event.target.value);  // checked and unchecked value
