@@ -1,4 +1,4 @@
-<app-breadcrumb [title]="product?.title" [breadcrumb]="'Product'"></app-breadcrumb>
+<app-breadcrumb [title]="product?.name" [breadcrumb]="'Product'"></app-breadcrumb>
 <!-- section start -->
 <section class="section-b-space">
   <div class="collection-wrapper productdetail">
@@ -10,8 +10,8 @@
                         <ng-template carouselSlide [id]="i">
                             <div>
                                 <img [defaultImage]="'assets/images/product/placeholder.jpg'" 
-                                     [lazyLoad]="image.src" 
-                                     [alt]="image.alt" class="img-fluid">
+                                     [lazyLoad]="image.imageUrl"
+                                     [alt]="image.imageUrl" class="img-fluid">
                             </div>
                         </ng-template>
                     </ng-container>
@@ -24,8 +24,7 @@
                                     <ng-template carouselSlide [id]="i">
                                         <div class="owl-thumb" [class.active]="i == activeSlide">
                                         <img [defaultImage]="'assets/images/product/placeholder.jpg'" 
-                                           [lazyLoad]="image.src" 
-                                           [alt]="image.alt" class="img-fluid" 
+                                           [lazyLoad]="image.imageUrl" class="img-fluid"
                                            (click)="owlCar.to(activeSlide = i.toString())">
                                         </div>
                                     </ng-template>
@@ -37,39 +36,39 @@
             </div>
             <div class="col-lg-6 rtl-text">
                 <div class="product-right">
-                    <h2>{{ product?.title }}</h2>
+                    <h2>{{ product?.name }}</h2>
                     <h4>
-                        <del *ngIf="product?.discount">
-                            {{ product?.price * productService.Currency?.price | currency: productService.Currency?.currency:'symbol' }}
+                        <del *ngIf="product?.discountPercent">
+                            {{ product?.cost * productService.Currency?.price | currency: productService.Currency?.currency:'symbol' }}
                         </del>
-                        <span>{{ product?.discount }}% off</span>
+                        <span>{{ product?.discountPercent }}% off</span>
                     </h4>
                     <h3>
-                        {{ (product?.price | discount:product) * productService.Currency?.price | currency: productService.Currency?.currency:'symbol' }}
+                        {{ (product?.cost | discount:product) * productService.Currency?.price | currency: productService.Currency?.currency:'symbol' }}
                     </h3>
-                    <ul class="color-variant" *ngIf="Color(product?.variants).length">
-                        <li [class]="color" [class.active]="activeSlide == i.toString()" *ngFor="let color of Color(product?.variants); index as i" 
+                    <ul class="color-variant" *ngIf="Color(product?.categories).length">
+                        <li [class]="color" [class.active]="activeSlide == i.toString()" *ngFor="let color of Color(product?.categories); index as i"
                             [ngStyle]="{'background-color': color}"
                             (click)="owlCar.to(activeSlide = i.toString())">
                         </li>
                     </ul>
-                    <app-stock-inventory [stock]="product.stock"></app-stock-inventory>
+<!--                    <app-stock-inventory [stock]="product.stock"></app-stock-inventory>-->
                     <div class="product-description border-product">
-                        <h6 class="product-title size-text" *ngIf="Size(product.variants).length">
+                        <h6 class="product-title size-text" *ngIf="Size(product.categories).length">
                             select size
                             <span>
                               <a href="javascrip:void(0)" (click)="SizeChart.openModal()">size chart</a>
                             </span>
                         </h6>
-                        <div class="size-box" *ngIf="Size(product.variants).length">
+                        <div class="size-box" *ngIf="Size(product.categories).length">
                             <ul>
-                                <li [class.active]="selectedSize == size" *ngFor="let size of Size(product.variants)">
+                                <li [class.active]="selectedSize == size" *ngFor="let size of Size(product.categories)">
                                     <a href="javascript:void(0)" (click)="selectSize(size)">{{ size | titlecase }}</a>
                                 </li>
                             </ul>
                         </div>
-                        <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></h5>
-                        <h5 class="avalibility" *ngIf="counter > product.stock"><span>Out of Stock</span></h5>
+<!--                        <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></h5>-->
+<!--                        <h5 class="avalibility" *ngIf="counter > product.stock"><span>Out of Stock</span></h5>-->
                         <h6 class="product-title">quantity</h6>
                         <div class="qty-box">
                             <div class="input-group">
@@ -88,8 +87,8 @@
                         </div>
                     </div>
                     <div class="product-buttons">
-                        <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock" (click)="addToCart(product)">add to cart</a>
-                        <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock" (click)="buyNow(product)">buy now</a>
+<!--                        <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock" (click)="addToCart(product)">add to cart</a>-->
+<!--                        <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock" (click)="buyNow(product)">buy now</a>-->
                     </div>
                     <div class="border-product">
                         <h6 class="product-title">product details</h6>

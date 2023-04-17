@@ -75,7 +75,7 @@ export class CheckoutComponent implements OnInit {
     zaloPayCheckout(): void {
         const productsDto: ProductDto[] = [];
         for (let i = 0; i < this.products.length; i++) {
-            const prodDto = new ProductDto(this.products[i].title, this.products[i].price.toString(), this.products[i].quantity.toString());
+            const prodDto = new ProductDto(this.products[i].name, this.products[i].cost.toString(), this.products[i].quantity.toString());
             productsDto[i] = prodDto;
         }
         const orderInfo: OrderInfo = new OrderInfo(this.checkoutForm.get('email').value, '50000', crypto.randomUUID());

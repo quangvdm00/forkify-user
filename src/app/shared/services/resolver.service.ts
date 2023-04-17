@@ -8,7 +8,22 @@ import {ProductService} from './product.service';
 })
 export class Resolver implements Resolve<Product> {
 
-    public product: Product = {};
+    public product: Product = {
+        averageRating: "",
+        categories: [],
+        comment: [],
+        cost: 0,
+        description: "",
+        discountPercent: 0,
+        id: 0,
+        images: [],
+        isEnabled: false,
+        name: "",
+        quantity: 0,
+        reviewCount: "",
+        shop: null,
+        sold: ""
+    };
 
     constructor(
         private router: Router,

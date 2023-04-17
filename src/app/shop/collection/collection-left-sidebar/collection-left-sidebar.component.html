@@ -20,7 +20,7 @@
                         <!-- side-bar colleps block stat -->
                         <div class="collection-filter-block">
                             <!-- brand filter start -->
-                            <app-brands [products]="products" [brands]="brands" (brandsFilter)="updateFilter($event)">
+                            <app-brands [products]="products" [shops]="brands" (brandsFilter)="updateFilter($event)">
                             </app-brands>
                             <!-- color filter start here -->
                             <app-colors [products]="products" [colors]="colors" (colorsFilter)="updateFilter($event)">
@@ -114,7 +114,7 @@
                                                 <h3>Sorry! Couldn't find the product you were looking For!!! </h3>
                                                 <p>Please check if you have misspelt something or try searching with
                                                     other words.</p>
-                                                <a [routerLink]="['/shop/collection/left/sidebar']"
+                                                <a [routerLink]="['/shop/products']"
                                                    class="btn btn-solid">continue shopping</a>
                                             </div>
                                         </div>

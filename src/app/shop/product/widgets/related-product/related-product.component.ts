@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Product } from '../../../../shared/classes/product';
+import {Category, Product} from '../../../../shared/classes/product';
 import { ProductService } from '../../../../shared/services/product.service';
 
 @Component({
@@ -9,13 +9,13 @@ import { ProductService } from '../../../../shared/services/product.service';
 })
 export class RelatedProductComponent implements OnInit {
   
-  @Input() type: string
-
+  @Input() type: string;
+  @Input() categories: Category[] = [];
   public products: Product[] = [];
 
   constructor(public productService: ProductService) { 
     this.productService.getProducts.subscribe(response => 
-      this.products = response.filter(item => item.type == this.type)
+      this.products = response.products.filter(item => item.categories[0] === this.type)
     );
   }
 

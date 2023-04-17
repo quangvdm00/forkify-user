@@ -12,7 +12,22 @@ import {SizeModalComponent} from "../../../../shared/components/modal/size-modal
 })
 export class ProductLeftSidebarComponent implements OnInit {
 
-    public product: Product = {};
+    public product: Product = {
+        averageRating: "",
+        categories: [],
+        comment: [],
+        cost: 0,
+        description: "",
+        discountPercent: 0,
+        id: 0,
+        images: [],
+        isEnabled: false,
+        name: "",
+        quantity: 0,
+        reviewCount: "",
+        shop: null,
+        sold: ""
+    };
     public counter: number = 1;
     public activeSlide: any = 0;
     public selectedSize: any;

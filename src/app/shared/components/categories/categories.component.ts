@@ -13,14 +13,15 @@ export class CategoriesComponent implements OnInit {
     public collapse: boolean = true;
 
     constructor(public productService: ProductService) {
-        this.productService.getProducts.subscribe(product => this.products = product);
+        this.productService.getProducts.subscribe(product => this.products = product.products);
+        console.log(this.products);
     }
 
     ngOnInit(): void {
     }
 
     get filterbyCategory() {
-        const category = [...new Set(this.products.map(product => product.type))];
+        const category = [...new Set(this.products.flatMap(item => item.categories).map(cat => cat.name))];
         return category;
     }
 

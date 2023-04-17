@@ -22,19 +22,19 @@
           <tbody *ngFor="let product of products">
             <tr>
               <td>
-                  <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]">
-                    <img [src]="product.images[0].src" [alt]="product.images[0].alt">
+                  <a [routerLink]="['/shop/product/left/sidebar/', product.name.replace(' ', '-')]">
+                    <img [src]="product.images[0].src" [alt]="product.images[0].imageUrl">
                   </a>
               </td>
               <td>
-                  <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]">{{ product.title | titlecase }}</a>
+                  <a [routerLink]="['/shop/product/left/sidebar/', product.name.replace(' ', '-')]">{{ product.name | titlecase }}</a>
                   <div class="mobile-cart-content row">
-                    <div class="col">
-                      <p>{{ product.stock > 0 ? 'in stock' : 'out of stock' }}</p>
-                    </div>
+<!--                    <div class="col">-->
+<!--                      <p>{{ product.stock > 0 ? 'in stock' : 'out of stock' }}</p>-->
+<!--                    </div>-->
                     <div class="col">
                       <h2 class="td-color">
-                          {{ (product.price | discount:product) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }}
+                          {{ (product.cost | discount:product) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }}
                       </h2>
                     </div>
                     <div class="col">
@@ -51,12 +51,12 @@
               </td>
               <td>
                   <h2>
-                    {{ (product.price | discount:product) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }}
+                    {{ (product.discountPercent | discount:product) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }}
                   </h2>
               </td>
-              <td>
-                  <p>{{ product.stock > 0 ? 'in stock' : 'out of stock' }}</p>
-              </td>
+<!--              <td>-->
+<!--                  <p>{{ product.stock > 0 ? 'in stock' : 'out of stock' }}</p>-->
+<!--              </td>-->
               <td>
                   <a href="javascript:void(0)" (click)="removeItem(product)" class="icon me-3">
                     <i class="ti-close"></i>

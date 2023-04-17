@@ -2,8 +2,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 import {ProductLeftSidebarComponent} from './product/sidebar/product-left-sidebar/product-left-sidebar.component';
-import {ProductRightSidebarComponent} from './product/sidebar/product-right-sidebar/product-right-sidebar.component';
-import {ProductNoSidebarComponent} from './product/sidebar/product-no-sidebar/product-no-sidebar.component';
 import {ThreeColumnComponent} from './product/three-column/three-column.component';
 import {FourImageComponent} from './product/four-image/four-image.component';
 import {BundleProductComponent} from './product/bundle-product/bundle-product.component';
@@ -30,20 +28,6 @@ const routes: Routes = [
     {
         path: 'products/:slug',
         component: ProductLeftSidebarComponent,
-        resolve: {
-            data: Resolver
-        }
-    },
-    {
-        path: 'product/right/sidebar/:slug',
-        component: ProductRightSidebarComponent,
-        resolve: {
-            data: Resolver
-        }
-    },
-    {
-        path: 'product/no/sidebar/:slug',
-        component: ProductNoSidebarComponent,
         resolve: {
             data: Resolver
         }
