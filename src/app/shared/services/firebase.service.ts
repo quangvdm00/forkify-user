@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from "@angular/router";
 import { UserService } from './user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
     providedIn: 'root'
@@ -16,11 +17,15 @@ export class FirebaseService {
     constructor(
         public firebaseAuth: AngularFireAuth,
         private userService: UserService,
+        private toastService: ToastrService,
         private router: Router) {
     }
 
     signUp(email: string, password: string) {
         this.firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .then(userCredential => {
+                userCredential.user.sendEmailVerification();
+            })
             .catch(
                 error => console.log(error)
             );
@@ -32,7 +37,7 @@ export class FirebaseService {
                 .then((response) => {
                     if (!response.user.emailVerified) {
                         response.user.sendEmailVerification();
-                        this.router.navigate(['/auth/email-not-verified']);
+                        window.location.assign('https://admin-foodify.vercel.app/auth/email-not-verified');
                         resolve(false); // trả về false nếu email chưa được xác thực
                     } else {
                         response.user.getIdToken().then((token: string) => {
@@ -58,7 +63,12 @@ export class FirebaseService {
                                             this.loggedIn = false;
                                             this.token = null;
                                             localStorage.clear();
-                                            this.router.navigate(['/403']);
+                                            if (user.isLocked) {
+                                                this.toastService.error("Tài khoản của bạn đã bị khoá. Vui lòng liên hệ quản trị viên để biết thêm chi tiết !")
+                                            }
+                                            else {
+                                                this.toastService.error("Tài khoản của bạn không có quyền đăng nhập vào trang web dành cho người dùng !")
+                                            }
                                             resolve(true); // trả về false nếu tài khoản không có quyền truy cập
                                         }
                                     );
@@ -105,10 +115,15 @@ export class FirebaseService {
         return this.token != null;
     }
 
+    isTokenExpired() {
+        const now = new Date().getTime() / 1000
+        const payload = JSON.parse(atob(localStorage.getItem('jwt-token').split('.')[1]));
+        return payload.exp < now
+    }
+
     logout() {
         this.firebaseAuth.signOut().then(
             res => {
-
 
             }
         );

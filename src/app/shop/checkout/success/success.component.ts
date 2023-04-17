@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
-import {Order} from '../../../shared/classes/order';
-import {OrderService} from '../../../shared/services/order.service';
-import {ProductService} from '../../../shared/services/product.service';
-import {response} from "express";
-import {map} from "rxjs/operators";
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Order } from '../../../shared/classes/order';
+import { OrderService } from '../../../shared/services/order.service';
+import { ProductService } from '../../../shared/services/product.service';
+import { response } from "express";
+import { map } from "rxjs/operators";
 
 @Component({
     selector: 'app-success',
@@ -15,12 +15,12 @@ export class SuccessComponent implements OnInit, AfterViewInit, OnDestroy {
     public orderDetails: Order = {};
     currentStep = 1;
     numSteps = 4;
-    orderStatus = 'ORDERED';
+    orderStatus = 'AWAITING';
     orderId: number;
     orderStatusInterval;
 
     constructor(public productService: ProductService,
-                private orderService: OrderService) {
+        private orderService: OrderService) {
     }
 
     ngOnInit(): void {
@@ -29,14 +29,12 @@ export class SuccessComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         this.nextStep();
-        console.log(this.orderStatus);
         this.orderStatusInterval = setInterval(() => {
             this.orderService.getOrderStatusUpdates(this.orderDetails.orderId).subscribe(
                 (next: string) => {
                     if (this.orderStatus !== next) {
                         this.nextStep();
                         this.orderStatus = next;
-                        console.log(this.orderStatus);
                     }
                 }
             );
@@ -88,6 +86,5 @@ export class SuccessComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         clearInterval(this.orderStatusInterval);
-        console.log('done');
     }
 }

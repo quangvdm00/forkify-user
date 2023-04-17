@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {FirebaseService} from "../../../shared/services/firebase.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { FirebaseService } from "../../../shared/services/firebase.service";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
+        private toastService: ToastrService,
         private firebaseAuthService: FirebaseService
     ) {
     }
@@ -30,9 +32,14 @@ export class LoginComponent implements OnInit {
     }
 
     onSignIn() {
-        console.log(this.getSignInEmail);
-        console.log(this.getSignInPassword);
-        this.firebaseAuthService.signIn(this.getSignInEmail, this.getSignInPassword);
+        this.firebaseAuthService.signIn(this.getSignInEmail, this.getSignInPassword).then((result) => {
+            if (result) {
+                this.toastService.success("Đăng nhập thành công.");
+            }
+            else {
+
+            }
+        });
     }
 
     get getSignInEmail() {

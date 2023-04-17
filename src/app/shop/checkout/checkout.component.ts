@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 // import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { environment } from '../../../environments/environment';
 import { Product } from "../../shared/classes/product";
@@ -13,6 +13,7 @@ import { Router } from "@angular/router";
 import { randomUUID } from "crypto";
 import { Address } from 'src/app/shared/classes/address';
 import { UserService } from 'src/app/shared/services/user.service';
+import { ShippingResponse } from 'src/app/shared/classes/shipping-response';
 
 @Component({
     selector: 'app-checkout',
@@ -25,10 +26,12 @@ export class CheckoutComponent implements OnInit {
     addresses: Address[] = [];
     isAddress: boolean = false;
     userName: string = '';
+    shippingResponse: ShippingResponse;
+    isShipping: boolean = false;
+    total: number;
 
     public checkoutForm: UntypedFormGroup;
     public products: Product[] = [];
-    // public payPalConfig ? : IPayPalConfig;
     public payment: string = 'ZaloPay';
     public amount: any;
     public paymentUrl: string;
@@ -65,36 +68,61 @@ export class CheckoutComponent implements OnInit {
         this.initConfig();
     }
 
-    public get getTotal(): Observable<number> {
+    public get getSubTotal(): Observable<number> {
         return this.productService.cartTotalAmount();
     }
 
-    // Stripe Payment Gateway
-    stripeCheckout() {
-        var handler = (<any>window).StripeCheckout.configure({
-            key: environment.stripe_token, // publishble key
-            locale: 'auto',
-            token: (token: any) => {
-                // You can access the token ID with `token.id`.
-                // Get the token ID to your server-side code for use.
-                this.orderService.createOrder(this.products, this.checkoutForm.value, token.id, this.amount);
-            }
-        });
-        handler.open({
-            name: 'Shopify',
-            description: 'Online Shopping Food Store',
-            amount: this.amount * 100
-        });
+    public get getTotal(): Observable<number> {
+        if (this.isAddress && this.shippingResponse?.cost > 0) {
+            return this.productService.cartTotalAmount().pipe(map(num => num + this.shippingResponse?.cost));
+        }
+        else {
+            return this.productService.cartTotalAmount();
+        }
     }
+
+    // Stripe Payment Gateway
+    // stripeCheckout() {
+    //     var handler = (<any>window).StripeCheckout.configure({
+    //         key: environment.stripe_token, // publishble key
+    //         locale: 'auto',
+    //         token: (token: any) => {
+    //             this.orderService.createOrder(this.products, this.checkoutForm.value, token.id, this.amount);
+    //         }
+    //     });
+    //     handler.open({
+    //         name: 'Shopify',
+    //         description: 'Online Shopping Food Store',
+    //         amount: this.amount * 100
+    //     });
+    // }
 
     zaloPayCheckout(): void {
         const productsDto: ProductDto[] = [];
+        const orderTrackingNumber = crypto.randomUUID();
         for (let i = 0; i < this.products.length; i++) {
-            const prodDto = new ProductDto(this.products[i].title, this.products[i].price.toString(), this.products[i].quantity.toString());
+            const prodDto = new ProductDto(this.products[i].name, this.products[i].cost.toString(), this.products[i].quantity.toString());
             productsDto[i] = prodDto;
         }
-        const orderInfo: OrderInfo = new OrderInfo(this.checkoutForm.get('email').value, '50000', crypto.randomUUID());
-        const paymentInfo: PaymentInfo = new PaymentInfo(productsDto, orderInfo);
+
+        this.getTotal.subscribe(result => {
+            const orderInfo: OrderInfo = new OrderInfo(this.checkoutForm.get('address').value, result.toString(), orderTrackingNumber);
+            const paymentInfo: PaymentInfo = new PaymentInfo(productsDto, orderInfo);
+            this.orderService.createZaloPayOrder(paymentInfo, this.checkoutForm.value).subscribe({
+                next: data => {
+                    this.paymentUrl = data.paymentOrderUrl;
+                },
+                error: err => console.log(err)
+            }
+            );
+
+            setTimeout(() => {
+                window.open(this.paymentUrl, '_blank');
+            }, 2000);
+        })
+
+
+
 
         // const orderInterval = setInterval(() => {
         //     this.orderService.createZaloPayOrder(paymentInfo).subscribe({
@@ -112,20 +140,7 @@ export class CheckoutComponent implements OnInit {
         //     );
         // }, 2000);
 
-        this.orderService.createZaloPayOrder(paymentInfo, this.checkoutForm.value).subscribe({
-            next: data => {
-                this.paymentUrl = data.paymentOrderUrl;
-                console.log(data.orderToken);
-            },
-            error: err => console.log(err)
-        }
-        );
 
-        setTimeout(() => {
-            console.log(this.paymentUrl);
-
-            window.open(this.paymentUrl, '_blank');
-        }, 2000);
     }
 
     // Paypal Payment Gateway
@@ -188,8 +203,21 @@ export class CheckoutComponent implements OnInit {
         this.isAddress = false;
         if (this.shippingAddress) {
             this.isAddress = true;
-            console.log(this.shippingAddress + ', Đà Nẵng')
+            const userAddress = this.shippingAddress + ', Đà Nẵng';
+            const shopId = this.products[0].id;
+            this.orderService.getShippingCost(userAddress, shopId).subscribe((res) => {
+                this.shippingResponse = res;
+            })
         }
+        else {
+            this.shippingResponse = undefined;
+        }
+    }
+
+    onLocalChange() {
+        this.checkoutForm.patchValue({ address: [''] });
+        this.isAddress = false;
+        this.shippingResponse = undefined;
     }
 
     get shippingAddress() { return this.checkoutForm.get('address').value }

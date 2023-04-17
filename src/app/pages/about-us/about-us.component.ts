@@ -15,6 +15,8 @@ export class AboutUsComponent implements OnInit {
     }
     public content = "Foodify là một trong những dự án mà team Pyramide đã chọn khi bắt đầu quá trình chọn lọc đề tài cho đồ án tốt nghiệp của tụi mình. Trải qua nhiều quá trình, chúng mình đã đưa ra sản phẩm đúng tiến trình đề ra. Các thành viên đã luôn cố gắng không ngừng nghỉ để hoàn thành tốt các phần việc của mình." +
         " Từ việc bắt đầu chọn công nghệ, nghiên cứu cơ sở dữ liệu và bắt tay vào code, test và hoàn thiện sản phẩm, chúng mình luôn mong muốn chọn được những điều tốt nhất cho mọi người."
+    public content2 = "Foodify sử dụng công nghệ Angular và Spring Boot cho các website, Java cho mobile và mySQL để quản lý dữ liệu. Bên cạnh đó, chúng mình còn sử dụng một số công nghệ như Firebase phục vụ cho việc quản lý người dùng và đăng nhập." +
+        " Chúng mình sử dụng Vercel để deploy front-end, Railway cho back-end và dùng Android Studio để tạo ra các file apk mang đến cho người dùng Android trải nghiệm một ứng dụng đặt đồ ăn trực tuyến được thực hiện bởi sinh viên trường Đại học FPT Đà Nẵng";
 
     public TeamSliderConfig: any = TeamSlider;
     public TestimonialSliderConfig: any = TestimonialSlider;
@@ -24,7 +26,7 @@ export class AboutUsComponent implements OnInit {
         image: 'assets/images/testimonial/quoc_duong.png',
         name: 'Dương Nguyễn Đức Quốc',
         designation: 'Mentor',
-        description: 'Là một trong 2 mentor của đồ án, hỗ trợ công việc cho team, giúp team chọn ra những công nghệ và hướng đi phù hợp với dự án. Bên cạnh đó, anh luôn bám sát dự án, giúp dự án hoàn thành như dự kiến',
+        description: 'Là một trong 2 mentor của đồ án, hỗ trợ công việc cho team, giúp team chọn ra những công nghệ và hướng đi phù hợp với dự án. Bên cạnh đó, anh luôn bám sát dự án, giúp dự án hoàn thành như dự kiến.',
     }, {
         image: 'assets/images/testimonial/thach.png',
         name: 'Lê Quang Thạch',
@@ -42,11 +44,11 @@ export class AboutUsComponent implements OnInit {
         name: 'Võ Đình Minh Quang',
         designation: 'Team Sub-leader'
     }, {
-        image: 'assets/images/team/3.jpg',
+        image: 'assets/images/team/loi.png',
         name: 'Phan Hữu Lợi',
         designation: 'Team member'
     }, {
-        image: 'assets/images/team/4.jpg',
+        image: 'assets/images/team/dat.png',
         name: 'Nguyễn Đức Đạt',
         designation: 'Team member'
     }, {

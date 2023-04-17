@@ -60,7 +60,7 @@ export class ProductBoxTwoComponent implements OnInit {
         this.ImageSrc = src;
     }
 
-    addToCart(product: any) {
+    addToCart(product: Product) {
         this.productService.addToCart(product);
     }
 

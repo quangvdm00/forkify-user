@@ -1,10 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../environments/environment';
-import {PaymentInfo} from '../classes/payment-info';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { PaymentInfo } from '../classes/payment-info';
+import { map } from 'rxjs/operators';
+import { ShippingResponse } from '../classes/shipping-response';
+import { OrderDto } from '../classes/order-dto';
 
 
 const state = {
@@ -16,11 +18,11 @@ const state = {
 })
 export class OrderService {
     private purchaseUrl = `${environment.foodOrderingBaseApiUrl}/checkout/purchase`;
-    private socket;
+    private orderUrl = `${environment.foodOrderingBaseApiUrl}/orders`;
     private debugEnabled = false;
 
     constructor(private router: Router,
-                private httpClient: HttpClient) {
+        private httpClient: HttpClient) {
     }
 
     // Get Checkout Items
@@ -30,6 +32,10 @@ export class OrderService {
             observer.complete();
         });
         return <Observable<any>>itemsStream;
+    }
+
+    saveNewOrder(userId: number, orderDto: OrderDto) {
+        return this.httpClient.post(`${environment.foodOrderingBaseApiUrl}/users/${userId}/orders`, orderDto);
     }
 
     // Create order
@@ -47,7 +53,6 @@ export class OrderService {
     }
 
     public createZaloPayOrder(paymentInfo: PaymentInfo, details: any): Observable<any> {
-        console.log(JSON.stringify(paymentInfo));
         var item = {
             shippingDetails: details,
             product: paymentInfo.items,
@@ -56,7 +61,7 @@ export class OrderService {
         };
         state.checkoutItems = item;
         localStorage.setItem('checkoutItems', JSON.stringify(item));
-        localStorage.removeItem('cartItems');
+        // localStorage.removeItem('cartItems');
 
         return this.httpClient.post<any>(this.purchaseUrl, paymentInfo);
     }
@@ -66,6 +71,10 @@ export class OrderService {
             map(res => res.orderStatus)
         );
         return response;
+    }
+
+    getShippingCost(address: string, shopId: number) {
+        return this.httpClient.get<ShippingResponse>(this.orderUrl + `/cost?address=${address}&shopId=${shopId}`);
     }
 }
 

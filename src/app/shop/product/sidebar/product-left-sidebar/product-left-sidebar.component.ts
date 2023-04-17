@@ -5,6 +5,9 @@ import { Product } from '../../../../shared/classes/product';
 import { ProductService } from '../../../../shared/services/product.service';
 import { SizeModalComponent } from "../../../../shared/components/modal/size-modal/size-modal.component";
 import { FirebaseService } from 'src/app/shared/services/firebase.service';
+import { CommentService } from 'src/app/shared/services/comment.service';
+import { Comment } from 'src/app/shared/classes/comment';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-product-left-sidebar',
@@ -15,6 +18,7 @@ export class ProductLeftSidebarComponent implements OnInit {
     private userId = this.firebaseService.getUserId();
 
     public product: Product;
+    public comments: Comment[] = [];
     public counter: number = 1;
     public activeSlide: any = 0;
     public selectedSize: any;
@@ -31,13 +35,15 @@ export class ProductLeftSidebarComponent implements OnInit {
         private firebaseService: FirebaseService,
         private route: ActivatedRoute,
         private router: Router,
+        private toastService: ToastrService,
+        private commentService: CommentService,
         public productService: ProductService) {
 
     }
 
     ngOnInit() {
         this.loadProductData();
-
+        this.loadCommentData();
     }
 
     loadProductData() {
@@ -46,8 +52,14 @@ export class ProductLeftSidebarComponent implements OnInit {
             this.product = product;
             this.productService.checkLoveProduct(this.userId, this.product.id).subscribe((response) => {
                 this.isWishlist = response.isTrue;
-                console.log("wishlist: " + this.isWishlist)
             })
+        })
+    }
+
+    loadCommentData() {
+        const id = +this.route.snapshot.paramMap.get('id');
+        this.commentService.getCommentsByProduct(id).subscribe((data) => {
+            this.comments = data.comments;
         })
     }
 
@@ -91,19 +103,17 @@ export class ProductLeftSidebarComponent implements OnInit {
 
     // Add to cart
     async addToCart(product: any) {
-        product.quantity = this.counter || 1;
-        const status = await this.productService.addToCart(product);
-        if (status)
-            this.router.navigate(['/shop/cart']);
+        const res = await this.productService.addToCart(product);
+        console.log(res)
     }
 
     // Buy Now
-    async buyNow(product: any) {
-        product.quantity = this.counter || 1;
-        const status = await this.productService.addToCart(product);
-        if (status)
-            this.router.navigate(['/shop/checkout']);
-    }
+    // async buyNow(product: any) {
+    //     product.quantity = this.counter || 1;
+    //     const status = await this.productService.addToCart(product);
+    //     if (status)
+    //         this.router.navigate(['/shop/checkout']);
+    // }
 
     // Add to Wishlist
     addToWishlist(product: Product) {

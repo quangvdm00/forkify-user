@@ -1,21 +1,21 @@
 <!-- breadcrumb start -->
-<app-breadcrumb [title]="'404 page'" [breadcrumb]="'404 page'" *ngIf="!orderDetails"></app-breadcrumb>
+<app-breadcrumb [title]="'Thanh toán'" [breadcrumb]="'Thanh toán'"></app-breadcrumb>
 <!-- breadcrumb End -->
 
 <!-- section start -->
-<section class="p-0" *ngIf="!orderDetails">
+<!-- <section class="p-0" *ngIf="!orderDetails">
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
                 <div class="error-section">
-                    <h1>404</h1>
+                    <h1>Thanh toán</h1>
                     <h2>page not found</h2>
                     <a [routerLink]="'/home/fashion'" class="btn btn-solid">back to home</a>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</section> -->
 <!-- Section ends -->
 
 <!-- thank-you section start -->
@@ -25,9 +25,9 @@
             <div class="col-md-12">
                 <div class="success-text">
                     <i class="fa fa-check-circle" aria-hidden="true"></i>
-                    <h2>thank you</h2>
-                    <p>Payment is has been received Order Placed Successfully</p>
-                    <p>Transaction ID:{{ orderDetails.orderId }}</p>
+                    <h2>Thanh toán thành công</h2>
+                    <p>Đơn hàng của bạn đã thanh toán thành công.</p>
+                    <p>Mã giao dịch: {{ orderDetails.orderId }}</p>
                 </div>
             </div>
         </div>
@@ -41,42 +41,43 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="product-order">
-                    <h3>your order details</h3>
+                    <h3>Đơn hàng của bạn</h3>
+                    <hr>
                     <div class="row product-order-detail" *ngFor="let product of orderDetails.product">
-                        <div class="col-3">
-                            <img [src]="product.images[0].src" alt="" class="img-fluid">
-                        </div>
+                        <!-- <div class="col-3">
+                            <img [src]="product?.images[0]?.imageUrl" alt="" class="img-fluid">
+                        </div> -->
                         <div class="col-3 order_detail">
                             <div>
-                                <h4>product name</h4>
-                                <h5>{{ product.title }}</h5>
+                                <h4>Tên sản phẩm</h4>
+                                <h5>{{ product._name }}</h5>
                             </div>
                         </div>
                         <div class="col-3 order_detail">
                             <div>
-                                <h4>quantity</h4>
-                                <h5>{{ product.quantity }}</h5>
+                                <h4>Số lượng</h4>
+                                <h5>{{ product._quantity }}</h5>
                             </div>
                         </div>
                         <div class="col-3 order_detail">
                             <div>
-                                <h4>price</h4>
-                                <h5>{{ product?.price * productService?.Currency?.price | discount:product | currency:productService?.Currency.currency:'symbol' }}</h5>
+                                <h4>Giá</h4>
+                                <h5>{{ product?._price }}</h5>
                             </div>
                         </div>
                     </div>
                     <div class="total-sec">
                         <ul>
-                            <li>Subtotal
-                                <span>{{ orderDetails.totalAmount | currency:productService?.Currency.currency:'symbol' }}</span>
+                            <li>Tiền sản phẩm
+                                <span>{{ orderDetails.totalAmount | currency:'VND'}}</span>
                             </li>
-                            <li>Shipping <span>$00.00</span></li>
-                            <li>Tax <span>$00.00</span></li>
+                            <li>Phí giao hàng <span>$00.00</span></li>
                         </ul>
                     </div>
                     <div class="final-total">
                         <h3>total
-                            <span>{{ orderDetails.totalAmount | currency:productService?.Currency.currency:'symbol' }}</span>
+                            <span>{{ orderDetails.totalAmount | currency:productService?.Currency.currency:'symbol'
+                                }}</span>
                         </h3>
                     </div>
                 </div>
@@ -84,21 +85,22 @@
             <div class="col-lg-6">
                 <div class="row order-success-sec">
                     <div class="col-sm-6">
-                        <h4>Summary</h4>
+                        <h4>Chi tiết đơn hàng</h4>
                         <ul class="order-detail">
-                            <li>order ID: {{ orderDetails.orderId }}</li>
+                            <li>Mã giao dịch: {{ orderDetails.orderId }}</li>
                             <li>Order Date: October 22, 2021</li>
                             <li>Order
-                                Total: {{ orderDetails.totalAmount | currency:productService?.Currency.currency:'symbol' }}</li>
+                                Total: {{ orderDetails.totalAmount | currency:productService?.Currency.currency:'symbol'
+                                }}</li>
                         </ul>
                     </div>
                     <div class="col-sm-6">
-                        <h4>shipping address</h4>
+                        <h4>Địa chỉ giao hàng</h4>
                         <ul class="order-detail">
-                            <li>{{ orderDetails.shippingDetails.address }}</li>
+                            <li>{{ orderDetails.shippingDetails.address }}, Đà Nẵng</li>
                             <li>{{ orderDetails.shippingDetails.state }}</li>
                             <li>{{ orderDetails.shippingDetails.country }}
-                                , {{ orderDetails.shippingDetails.postalcode }}</li>
+                                {{ orderDetails.shippingDetails.postalcode }}</li>
                             <li>Contact No. {{ orderDetails.shippingDetails.phone }}</li>
                         </ul>
                     </div>
@@ -130,7 +132,7 @@
                                 <div class="step-bar-right"></div>
                             </div>
                         </div>
-<!--                        <button (click)="nextStep()">Next</button>-->
+                        <!--                        <button (click)="nextStep()">Next</button>-->
                         <div>Order Status: {{ this.orderStatus }}</div>
                     </div>
                     <div class="col-sm-12 payment-mode">

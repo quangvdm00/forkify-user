@@ -17,7 +17,7 @@
                     <ul class="header-dropdown">
                         <li class="compare">
                             <a [routerLink]="['/home/aboutus']">
-                                <i class="fa fa-random" aria-hidden="true"></i>About Us
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i>About Us
                             </a>
                         </li>
                         <li class="mobile-wishlist">
@@ -27,13 +27,17 @@
                         </li>
                         <li class="onhover-dropdown mobile-account">
                             <a *ngIf="isLoggedIn" [routerLink]="['/home/dashboard']"><i class="fa fa-user"
-                                    aria-hidden="true"></i>Tài
-                                khoản</a>
+                                    aria-hidden="true"></i>Tài khoản</a>
                             <a *ngIf="!isLoggedIn"><i class="fa fa-user" aria-hidden="true"></i>Tài khoản</a>
                             <ul class="onhover-show-div">
                                 <li *ngIf="!isLoggedIn">
                                     <a data-lng="en" [routerLink]="['/home/login']">
                                         Đăng nhập
+                                    </a>
+                                </li>
+                                <li *ngIf="!isLoggedIn">
+                                    <a data-lng="en" [routerLink]="['/home/register']">
+                                        Đăng ký
                                     </a>
                                 </li>
                                 <li *ngIf="isLoggedIn">

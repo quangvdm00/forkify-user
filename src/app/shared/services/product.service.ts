@@ -177,30 +177,31 @@ export class ProductService {
     public addToCart(product: Product): any {
         this.sameShop = false;
         const carts: Product[] = state.cart;
-        if (carts.length) {
+        if (carts.length > 0) {
             carts.forEach((prod) => {
                 if (product.shop.name == prod.shop.name) {
-                    const cartItem = state.cart.find(item => item.id === product.id);
-                    const qty = product.quantity ? product.quantity : 1;
-                    const items = cartItem ? cartItem : product;
-                    // const stock = this.calculateStockCounts(items, qty);
-
-                    // if (!stock) return false
-
-                    if (cartItem) {
-                        cartItem.quantity += qty
-                    } else {
-                        state.cart.push({
-                            ...product,
-                            quantity: qty
-                        })
-                    }
-
-                    this.OpenCart = true; // If we use cart variation modal
-                    localStorage.setItem("cartItems", JSON.stringify(state.cart));
                     this.sameShop = true;
                 }
             })
+
+            if (this.sameShop) {
+                const cartItem = state.cart.find(item => item.id === product.id);
+                const qty = product.quantity ? product.quantity : 1;
+                const items = cartItem ? cartItem : product;
+
+                if (cartItem) {
+                    cartItem.quantity += qty
+                } else {
+                    state.cart.push({
+                        ...product,
+                        quantity: qty
+                    })
+                }
+
+                this.OpenCart = true; // If we use cart variation modal
+                localStorage.setItem("cartItems", JSON.stringify(state.cart));
+                this.toastrService.success(`Thêm ${product.name} vào giỏ hàng thành công`);
+            }
 
             if (!this.sameShop) {
                 this.toastrService.error("Chỉ thêm được sản phẩm cùng shop vào giỏ hàng!")
@@ -211,7 +212,6 @@ export class ProductService {
             const qty = product.quantity ? product.quantity : 1;
             const items = cartItem ? cartItem : product;
             // const stock = this.calculateStockCounts(items, qty);
-
             // if (!stock) return false
 
             if (cartItem) {
@@ -225,6 +225,7 @@ export class ProductService {
 
             this.OpenCart = true; // If we use cart variation modal
             localStorage.setItem("cartItems", JSON.stringify(state.cart));
+            this.toastrService.success(`Thêm ${product.name} vào giỏ hàng thành công`);
         }
     }
 
@@ -267,7 +268,7 @@ export class ProductService {
         return this.cartItems.pipe(map((product: Product[]) => {
             return product.reduce((prev, curr: Product) => {
                 let cost = curr.cost;
-                if (curr.discount) {
+                if (curr.discountPercent) {
                     cost = curr.cost - (curr.cost * curr.discountPercent / 100)
                 }
                 return (prev + cost * curr.quantity) * this.Currency.price;

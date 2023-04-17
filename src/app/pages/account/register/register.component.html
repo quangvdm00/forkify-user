@@ -1,40 +1,77 @@
-<app-breadcrumb [title]="'Register'" [breadcrumb]="'Register'"></app-breadcrumb>
+<app-breadcrumb [title]="''" [breadcrumb]="'Đăng ký'"></app-breadcrumb>
 <!-- section start -->
 <section class="register-page section-b-space">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h3>create account</h3>
+                <h3>Đăng ký tài khoản</h3>
                 <div class="theme-card">
-                    <form
-                            (ngSubmit)="onSignUp()"
-                            [formGroup]="registerForm"
-                            class="theme-form">
+                    <form [formGroup]="registerForm" class="theme-form">
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="email">First Name</label>
-                                <input type="text" class="form-control" id="fname" placeholder="First Name" required="">
+                                <label for="email">Họ và tên</label>
+                                <input formControlName="fullName" type="text" class="form-control"
+                                    placeholder="Họ và tên" required="">
                             </div>
-                            <div class="col-md-6">
-                                <label for="review">Last Name</label>
-                                <input type="password" class="form-control" id="lname" placeholder="Last Name" required="">
+                            <div class="col-md-3">
+                                <label for="review">Ngày sinh</label>
+                                <input formControlName="dob" type="date" class="form-control" placeholder=""
+                                    required="">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="review">CCCD/CMND</label>
+                                <input formControlName="identifiedCode" type="text" class="form-control"
+                                    placeholder="CCCD/CMND" required="">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="email">email</label>
-                                <input type="text" class="form-control"
-                                       formControlName="email"
-                                       id="email" placeholder="Email" required="">
+                                <label for="email">Địa chỉ</label>
+                                <input formControlName="address" type="text" class="form-control" id="fname"
+                                    placeholder="Địa chỉ (số đường, số nhà ...)" required="">
                             </div>
-                            <div class="col-md-6">
-                                <label for="review">Password</label>
-                                <input type="password" class="form-control"
-                                       formControlName="password"
-                                       id="review" placeholder="Enter your password" required="">
+                            <div class="col-md-3">
+                                <label for="review">Quận</label>
+                                <select class="form-control" required="" formControlName="district"
+                                    (change)="onDistrictSelected()">
+                                    <option selected=true value="">--- Chọn quận ---</option>
+                                    <option *ngFor="let district of districts" [value]="district.name">{{ district.name
+                                        }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="review">Phường</label>
+                                <select formControlName="ward" class="form-control" required="">
+                                    <option selected=true value="">--- Chọn phường ---</option>
+                                    <option *ngFor="let ward of wards" [value]="ward.name">{{ ward.name }}</option>
+                                </select>
                             </div>
                         </div>
-                        <button class="btn btn-solid">create Account</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" formControlName="email" placeholder="Email"
+                                    required="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="review">Số điện thoại</label>
+                                <input type="text" class="form-control" formControlName="phoneNumber"
+                                    placeholder="Số điện thoại" required="">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Mật khẩu</label>
+                                <input type="password" class="form-control" formControlName="password"
+                                    placeholder="Mật khẩu" required="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="review">Xác nhận mật khẩu</label>
+                                <input type="password" class="form-control" formControlName="confirmPassword"
+                                    placeholder="Xác nhận mật khẩu" required="">
+                            </div>
+                        </div>
+                        <button class="btn btn-solid" (click)="onSignUp()">Tạo tài khoản</button>
                     </form>
                 </div>
             </div>
