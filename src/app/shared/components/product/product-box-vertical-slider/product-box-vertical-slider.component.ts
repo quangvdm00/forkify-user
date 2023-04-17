@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class ProductBoxVerticalSliderComponent implements OnInit {
 
     @Input() title: string = 'Sản phẩm mới'; // Default
+    @Input() category: string = '';
     @Input() type: string = 'fashion'; // Default Fashion
 
     //Pagination Properties

@@ -63,6 +63,7 @@ export class ProductLeftSidebarComponent implements OnInit {
 
     loadProductData() {
         const id = +this.route.snapshot.paramMap.get('id');
+        console.log(id)
         this.productService.getProductById(id).subscribe((product) => {
             this.product = product;
             this.productService.checkLoveProduct(this.userId, this.product.id).subscribe((response) => {
