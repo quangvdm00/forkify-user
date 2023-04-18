@@ -14,7 +14,7 @@ export class ProductTabsComponent implements OnInit {
 
   constructor(public productService: ProductService) {
     this.productService.getProducts.subscribe(response => {
-      this.products = response.products.filter(item => item.categories[0].name === 'Đồ nướng');
+      this.products = response.filter(item => item.categories[0].name === 'Đồ nướng');
       // Get Product Collection
       this.products.filter((item) => {
         item.categories.filter((collection) => {
