@@ -15,7 +15,7 @@ export class ProductSliderComponent implements OnInit {
   public ProductSliderConfig: any = ProductSlider;
   
   constructor(public productService: ProductService) { 
-    this.productService.getProducts.subscribe(response => this.products = response.products);
+    this.productService.getProducts.subscribe(response => this.products = response);
   }
 
   ngOnInit(): void {

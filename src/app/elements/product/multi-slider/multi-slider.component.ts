@@ -16,7 +16,7 @@ export class MultiSliderComponent implements OnInit {
 
   constructor(public productService: ProductService) {
     this.productService.getProducts.subscribe(response =>
-      this.products = response.products.filter(item => item.categories[0].name === 'Đồ nướng')
+      this.products = response.filter(item => item.categories[0].name === 'Đồ nướng')
     );
   }
 

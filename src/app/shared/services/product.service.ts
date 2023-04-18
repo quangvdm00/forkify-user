@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
-import { Product } from '../classes/product';
-import { environment } from 'src/environments/environment';
-import { StringBoolObject } from '../string-bool-object';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {ToastrService} from 'ngx-toastr';
+import {Product} from '../classes/product';
+import {environment} from 'src/environments/environment';
+import {StringBoolObject} from '../string-bool-object';
 
 const state = {
     products: JSON.parse(localStorage['products'] || '[]'),
@@ -19,17 +19,17 @@ const state = {
 })
 export class ProductService {
 
-    public Currency = { name: 'VND', currency: 'VND', price: 1 } // Default Currency
+    public Currency = {name: 'VND', currency: 'VND', price: 1} // Default Currency
     public OpenCart: boolean = false;
     public Products;
     private baseUrl = environment.foodOrderingBaseApiUrl;
 
-    private productUrl = `${environment.foodOrderingBaseApiUrl}/products`
-    private userUrl = `${environment.foodOrderingBaseApiUrl}/users`
+    private productUrl = `${environment.foodOrderingBaseApiUrl}/products`;
+    private userUrl = `${environment.foodOrderingBaseApiUrl}/users`;
     private sameShop: boolean = false;
 
     constructor(private httpClient: HttpClient,
-        private toastrService: ToastrService) {
+                private toastrService: ToastrService) {
     }
 
     /*
@@ -41,10 +41,11 @@ export class ProductService {
     // Product
     // this.baseUrl + '/products'
     // assets/data/products.json
-    private get products(): Observable<GetResponseProduct> {
-        this.Products = this.httpClient.get<GetResponseProduct>(this.baseUrl + '/products').pipe(map(data => data));
-        // this.Products = this.http.get<Product[]>('assets/data/products.json').pipe(map(data => data));
+    private get products(): Observable<Product[]> {
+        // this.Products = this.httpClient.get<GetResponseProductNoParam>(this.baseUrl + '/products').pipe(map(data => data));
+        this.Products = this.httpClient.get<Product[]>(this.baseUrl + '/v1/products/enable').pipe(map(data => data));
 
+        // this.Products = this.http.get<Product[]>('assets/data/products.json').pipe(map(data => data));
         this.Products.subscribe(next => {
             localStorage['products'] = JSON.stringify(next);
         });
@@ -59,14 +60,14 @@ export class ProductService {
     }
 
     // Get Products
-    public get getProducts(): Observable<GetResponseProduct> {
+    public get getProducts(): Observable<Product[]> {
         return this.products;
     }
 
     // Get Products By Slug
     public getProductBySlug(slug: string): Observable<Product> {
         return this.products.pipe(map(items => {
-            return items.products.find((item: any) => {
+            return items.find((item: any) => {
                 return item.name.replace(' ', '-') === slug;
             });
         }));
@@ -212,8 +213,7 @@ export class ProductService {
             if (!this.sameShop) {
                 this.toastrService.error("Chỉ thêm được sản phẩm cùng shop vào giỏ hàng!")
             }
-        }
-        else {
+        } else {
             const cartItem = state.cart.find(item => item.id === product.id);
             const qty = product.quantity ? product.quantity : 1;
             const items = cartItem ? cartItem : product;
@@ -291,7 +291,7 @@ export class ProductService {
     // Get Product Filter
     public filterProducts(filter?: any): Observable<Product[]> {
         return this.products.pipe(map(product =>
-            product.products.filter((item: Product) => {
+            product.filter((item: Product) => {
                 if (!filter.length) {
                     return true;
                 }
@@ -416,9 +416,8 @@ export class ProductService {
 
 }
 
-export interface GetResponseProduct {
+export interface GetResponseProductNoParam {
     products: Product[];
-    param: Page[];
 }
 
 export interface Page {

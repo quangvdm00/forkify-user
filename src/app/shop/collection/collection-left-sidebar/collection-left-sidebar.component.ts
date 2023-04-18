@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ViewportScroller } from '@angular/common';
-import { ProductService } from '../../../shared/services/product.service';
-import { Product } from '../../../shared/classes/product';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ViewportScroller} from '@angular/common';
+import {ProductService} from '../../../shared/services/product.service';
+import {Product} from '../../../shared/classes/product';
 
 @Component({
     selector: 'app-collection-left-sidebar',
@@ -28,7 +28,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
     public loader: boolean = true;
 
     constructor(private route: ActivatedRoute, private router: Router,
-        private viewScroller: ViewportScroller, public productService: ProductService) {
+                private viewScroller: ViewportScroller, public productService: ProductService) {
         // Get Query params..
         this.route.queryParams.subscribe(params => {
             //
@@ -73,8 +73,9 @@ export class CollectionLeftSidebarComponent implements OnInit {
 
     ngOnInit(): void {
         this.productService.getProducts.subscribe(
-            data => this.products = data.products
+            data => this.products = data
         );
+        // console.log(this.products);
     }
 
 
@@ -104,7 +105,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
     sortByFilter(value) {
         this.router.navigate([], {
             relativeTo: this.route,
-            queryParams: { sortBy: value ? value : null },
+            queryParams: {sortBy: value ? value : null},
             queryParamsHandling: 'merge', // preserve the existing query params in the route
             skipLocationChange: false  // do trigger navigation
         }).finally(() => {
@@ -152,7 +153,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
     setPage(page: number) {
         this.router.navigate([], {
             relativeTo: this.route,
-            queryParams: { page: page },
+            queryParams: {page: page},
             queryParamsHandling: 'merge', // preserve the existing query params in the route
             skipLocationChange: false  // do trigger navigation
         }).finally(() => {

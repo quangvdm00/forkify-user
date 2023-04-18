@@ -1,6 +1,6 @@
-import { Category } from "./category";
-import { ProductImage } from "./product-image";
-import { Shop } from "./shop";
+import {Category} from "./category";
+import {ProductImage} from "./product-image";
+import {Shop} from "./shop";
 
 // Products
 export interface Product {

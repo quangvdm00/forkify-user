@@ -13,7 +13,8 @@ export class CategoriesComponent implements OnInit {
     public collapse: boolean = true;
 
     constructor(public productService: ProductService) {
-        this.productService.getProducts.subscribe(product => this.products = product.products);
+        // this.productService.getProducts.subscribe(product => this.products = product.products);
+        this.productService.getProducts.subscribe(product => this.products = product);
         console.log(this.products);
     }
 
