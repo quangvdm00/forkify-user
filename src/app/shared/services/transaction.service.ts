@@ -13,7 +13,8 @@ export class TransactionService {
     private httpClient: HttpClient
   ) { }
 
-  createNewTransaction(transaction: Transaction) {
-    return this.httpClient.post<Transaction>(this.transUrl, transaction);
+  createNewTransaction(transactionDto: Transaction) {
+    console.log(transactionDto);
+    return this.httpClient.post(this.transUrl, transactionDto);
   }
 }

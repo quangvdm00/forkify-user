@@ -184,6 +184,7 @@ export class CheckoutComponent implements OnInit {
                 setTimeout(() => {
                     window.open(this.paymentUrl, '_blank');
                 }, 2000);
+
             })
         }
         else if (this.isShipping == true && this.isAddress == true) {
@@ -206,10 +207,6 @@ export class CheckoutComponent implements OnInit {
         else {
             this.toastService.warning("Vui lòng chọn địa chỉ giao hàng trước khi đặt đơn");
         }
-
-
-
-
 
 
         // const orderInterval = setInterval(() => {
