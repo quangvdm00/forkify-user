@@ -86,7 +86,7 @@
                                     </ul>
 <!--                                    <app-stock-inventory [stock]="product?.stock"></app-stock-inventory>-->
                                     <div class="product-description border-product">
-                                        <h6 class="product-title size-text" *ngIf="Size(product.categories).length">
+                                        <h6 class="product-title size-text" *ngIf="Size(product?.categories).length">
                                             select size
                                             <span>
                                                 <a href="javascrip:void(0)" (click)="SizeChart.openModal()">size
@@ -107,7 +107,7 @@
                                         <!--                                        </h5>-->
                                         <!--                                        <h5 class="avalibility" *ngIf="counter > product.stock">-->
                                         <!--                                            <span>Out of Stock</span></h5>-->
-                                        <h6 class="product-title">quantity</h6>
+                                        <h6 class="product-title">Số lượng</h6>
                                         <div class="qty-box">
                                             <div class="input-group">
                                                 <span class="input-group-prepend">
@@ -126,7 +126,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                     <div class="product-buttons">
                                         <a class="btn btn-solid" (click)="addToCart(product)">Thêm
                                             vào giỏ</a>

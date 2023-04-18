@@ -63,14 +63,12 @@
         <div class="col offset-xl-1">
           <div class="sub-title">
             <div class="footer-title">
-              <h4>Categories</h4>
+              <h4>sản phẩm bán chạy</h4>
             </div>
             <div class="footer-contant">
               <ul>
-                <li><a href="javascript:void(0)">Womens Fashion</a></li>
-                <li><a href="javascript:void(0)">Mens Fashion</a></li>
-                <li><a href="javascript:void(0)">Kids Fashion</a></li>
-                <li><a href="javascript:void(0)">Featured</a></li>
+                <li *ngFor="let product of products"><a>{{ product.name
+                    }}</a></li>
               </ul>
             </div>
           </div>

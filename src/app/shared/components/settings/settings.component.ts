@@ -14,8 +14,8 @@ export class SettingsComponent implements OnInit {
 
   public products: Product[] = [];
   public search: boolean = false;
-  
-  public languages = [{ 
+
+  public languages = [{
     name: 'English',
     code: 'en'
   }, {
@@ -50,11 +50,8 @@ export class SettingsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  searchToggle(){
-    this.search = !this.search;
-  }
 
-  changeLanguage(code){
+  changeLanguage(code) {
     if (isPlatformBrowser(this.platformId)) {
       this.translate.use(code)
     }

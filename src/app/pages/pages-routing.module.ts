@@ -9,7 +9,7 @@ import { RegisterComponent } from './account/register/register.component';
 import { ForgetPasswordComponent } from './account/forget-password/forget-password.component';
 import { ProfileComponent } from './account/profile/profile.component';
 import { ContactComponent } from './account/contact/contact.component';
-import { CheckoutComponent } from './account/checkout/checkout.component';
+import { CheckoutComponent } from './account/order/checkout.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { SearchComponent } from './search/search.component';
 import { TypographyComponent } from './typography/typography.component';
@@ -23,23 +23,17 @@ import { ErrorComponent } from './error/error.component';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { FaqComponent } from './faq/faq.component';
 import { ForbiddenComponent } from './account/forbidden/forbidden.component';
-import { BlogLeftSidebarComponent } from './blog/blog-left-sidebar/blog-left-sidebar.component';
-import { BlogRightSidebarComponent } from './blog/blog-right-sidebar/blog-right-sidebar.component';
-import { BlogNoSidebarComponent } from './blog/blog-no-sidebar/blog-no-sidebar.component';
-import { BlogDetailsComponent } from './blog/blog-details/blog-details.component';
-import { GridTwoComponent } from './portfolio/grid-two/grid-two.component';
-import { GridThreeComponent } from './portfolio/grid-three/grid-three.component';
-import { GridFourComponent } from './portfolio/grid-four/grid-four.component';
-import { MasonryGridTwoComponent } from './portfolio/masonry-grid-two/masonry-grid-two.component';
-import { MasonryGridThreeComponent } from './portfolio/masonry-grid-three/masonry-grid-three.component';
-import { MasonryGridFourComponent } from './portfolio/masonry-grid-four/masonry-grid-four.component';
-import { MasonryFullWidthComponent } from './portfolio/masonry-full-width/masonry-full-width.component';
 import { UserAddressesComponent } from './account/user-addresses/user-addresses.component';
+import { OrderListComponent } from './account/order-list/order-list.component';
 
 const routes: Routes = [
     {
         path: 'wishlist',
         component: WishlistComponent
+    },
+    {
+        path: 'my-orders',
+        component: OrderListComponent
     },
     {
         path: 'cart',
@@ -74,7 +68,7 @@ const routes: Routes = [
         component: ContactComponent
     },
     {
-        path: 'checkout',
+        path: 'order/:id',
         component: CheckoutComponent
     },
     {

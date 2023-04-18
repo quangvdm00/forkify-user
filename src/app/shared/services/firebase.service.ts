@@ -69,7 +69,7 @@ export class FirebaseService {
                                             else {
                                                 this.toastService.error("Tài khoản của bạn không có quyền đăng nhập vào trang web dành cho người dùng !")
                                             }
-                                            resolve(true); // trả về false nếu tài khoản không có quyền truy cập
+                                            resolve(false); // trả về false nếu tài khoản không có quyền truy cập
                                         }
                                     );
                                 }

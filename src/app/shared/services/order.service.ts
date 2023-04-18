@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { PaymentInfo } from '../classes/payment-info';
 import { map } from 'rxjs/operators';
 import { ShippingResponse } from '../classes/shipping-response';
-import { OrderDto } from '../classes/order-dto';
+import { OrderDto, OrderResponse, OrderResponsePageable } from '../classes/order-dto';
 
 
 const state = {
@@ -19,7 +19,6 @@ const state = {
 export class OrderService {
     private purchaseUrl = `${environment.foodOrderingBaseApiUrl}/checkout/purchase`;
     private orderUrl = `${environment.foodOrderingBaseApiUrl}/orders`;
-    private debugEnabled = false;
 
     constructor(private router: Router,
         private httpClient: HttpClient) {
@@ -35,7 +34,15 @@ export class OrderService {
     }
 
     saveNewOrder(userId: number, orderDto: OrderDto) {
-        return this.httpClient.post(`${environment.foodOrderingBaseApiUrl}/users/${userId}/orders`, orderDto);
+        return this.httpClient.post<OrderResponse>(`${environment.foodOrderingBaseApiUrl}/users/${userId}/orders`, orderDto);
+    }
+
+    getOrderByUser(userId: number) {
+        return this.httpClient.get<OrderResponsePageable>(`${environment.foodOrderingBaseApiUrl}/users/${userId}/orders?pageSize=5&sortBy=orderTime&sortDir=desc`)
+    }
+
+    getOrderById(userId: number, id: number) {
+        return this.httpClient.get<OrderResponse>(`${environment.foodOrderingBaseApiUrl}/users/${userId}/orders/${id}`)
     }
 
     // Create order
@@ -61,7 +68,6 @@ export class OrderService {
         };
         state.checkoutItems = item;
         localStorage.setItem('checkoutItems', JSON.stringify(item));
-        // localStorage.removeItem('cartItems');
 
         return this.httpClient.post<any>(this.purchaseUrl, paymentInfo);
     }

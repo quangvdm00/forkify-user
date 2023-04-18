@@ -200,7 +200,7 @@
                                                 currency:productService?.Currency.currency:'symbol'}}</span>
                                         </li>
                                         <li *ngIf='products.length'>
-                                            Giao hàng tận nơi
+                                            Phương thức giao hàng
                                             <div class="shipping">
                                                 <div class="shopping-option">
                                                     <input type="radio" name="shipping" id="local-pickup"
@@ -233,16 +233,13 @@
                                     <div class="upper-box">
                                         <div class="payment-options">
                                             <ul>
-                                                <!-- <li>
+                                                <li>
                                                     <div class="radio-option">
-                                                        <input type="radio" [(ngModel)]="payment" [value]="'Stripe'"
+                                                        <input type="radio" [(ngModel)]="payment" [value]="'CASH'"
                                                             name="payment-group" id="payment-2">
-                                                        <label for="payment-2">Stripe
-                                                            <span class="small-text">Please send a check to Store Name,
-                                                                Store Street, Store Town, Store State / County, Store
-                                                                Postcode.</span></label>
+                                                        <label for="payment-2">Tiền mặt</label>
                                                     </div>
-                                                </li> -->
+                                                </li>
                                                 <li>
                                                     <div class="radio-option paypal">
                                                         <input type="radio" [(ngModel)]="payment" [value]="'ZaloPay'"
@@ -255,32 +252,18 @@
                                     </div>
                                     <!--                                   [disabled]="!checkoutForm.valid" -->
                                     <div class="text-end">
-                                        <button type="submit" class="btn-solid btn" *ngIf="payment == 'Stripe'">
-                                            Stripe Place Order
+                                        <button type="submit" class="btn-solid btn" *ngIf="payment == 'CASH'"
+                                            (click)="cashCheckout()">
+                                            Thanh toán
                                         </button>
-                                        <!-- <ngx-paypal [config]="payPalConfig" *ngIf="payment == 'Paypal'"></ngx-paypal> -->
                                     </div>
 
                                     <div class="text-end">
                                         <button type="submit" class="btn-solid btn" (click)="zaloPayCheckout()"
                                             *ngIf="payment == 'ZaloPay'">
-                                            ZaloPay Place Order
+                                            Thanh toán ngay
                                         </button>
-                                        <!-- <ngx-paypal [config]="payPalConfig" *ngIf="payment == 'Paypal'"></ngx-paypal> -->
                                     </div>
-                                    <!--                                    <div class="text-end">-->
-                                    <!--                                        <button type="submit" class="btn-solid btn" (click)="checkPaymentStatus()">-->
-                                    <!--                                            Check Payment Status-->
-                                    <!--                                        </button>-->
-                                    <!--                                        &lt;!&ndash; <ngx-paypal [config]="payPalConfig" *ngIf="payment == 'Paypal'"></ngx-paypal> &ndash;&gt;-->
-                                    <!--                                    </div>-->
-
-                                    <!--                                    <div class="text-end">-->
-                                    <!--                                        <button type="submit" class="btn-solid btn" [disabled]="!checkoutForm.valid" (click)="vnpayCheckout()" *ngIf="payment == 'Stripe'">-->
-                                    <!--                                            Place Order-->
-                                    <!--                                        </button>-->
-                                    <!--                                        &lt;!&ndash; <ngx-paypal [config]="payPalConfig" *ngIf="payment == 'Paypal'"></ngx-paypal> &ndash;&gt;-->
-                                    <!--                                    </div>-->
                                 </div>
                             </div>
                         </div>

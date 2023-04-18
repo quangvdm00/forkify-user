@@ -1,4 +1,4 @@
-<app-breadcrumb [title]="'Món ăn'" [breadcrumb]="'Collection'"></app-breadcrumb>
+<app-breadcrumb [title]="'Danh sách'" [breadcrumb]="'Danh sách'"></app-breadcrumb>
 <!-- section start -->
 <section class="section-b-space">
     <div class="collection-wrapper">
@@ -39,8 +39,8 @@
                         <!-- side-bar single product slider end -->
                         <!-- side-bar banner start here -->
                         <div class="collection-sidebar-banner">
-                            <a [routerLink]="['/shop/collection/left/sidebar']">
-                                <img src="assets/images/collection-sidebar-banner.png" class="img-fluid" alt="banner">
+                            <a>
+                                <img src="assets/images/side-bar-banner.png" class="img-fluid" alt="banner">
                             </a>
                         </div>
                         <!-- side-bar banner end here -->
@@ -51,11 +51,11 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="top-banner-wrapper">
-                                    <a [routerLink]="['/shop/collection/left/sidebar']">
-                                        <img src="assets/images/collection-banner.jpg" class="img-fluid " alt="">
+                                    <a>
+                                        <img src="assets/images/coffee-30.png" class="img-fluid " alt="">
                                     </a>
                                     <div class="top-banner-content small-section">
-                                        <h4>fashion</h4>
+                                        <!-- <h4>fashion</h4>
                                         <h5>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                                         </h5>
                                         <p>
@@ -68,7 +68,7 @@
                                             1960s with the release of Letraset sheets containing Lorem Ipsum passages,
                                             and more recently with desktop publishing software like Aldus PageMaker
                                             including versions of Lorem Ipsum.
-                                        </p>
+                                        </p> -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -109,12 +109,11 @@
                                             </div>
                                             <div class="col-sm-12 text-center section-b-space mt-5 no-found"
                                                 *ngIf="!products.length">
-                                                <img src="assets/images/empty-search.jpg" class="img-fluid mb-4">
-                                                <h3>Sorry! Couldn't find the product you were looking For!!! </h3>
-                                                <p>Please check if you have misspelt something or try searching with
-                                                    other words.</p>
-                                                <a [routerLink]="['/shop/products']" class="btn btn-solid">continue
-                                                    shopping</a>
+                                                <img src="assets/images/empty-search.png" class="img-fluid mb-4">
+                                                <h3>Xin lỗi. Sản phẩm bạn đang tìm kiếm không tồn tại!!! </h3>
+                                                <p>Vui lòng thử lại bằng cách chọn các thuộc tính khác.</p>
+                                                <a [routerLink]="['/shop/products']" class="btn btn-solid">Tiếp tục mua
+                                                    sắm</a>
                                             </div>
                                         </div>
                                     </div>

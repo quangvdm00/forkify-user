@@ -14,6 +14,9 @@ import { randomUUID } from "crypto";
 import { Address } from 'src/app/shared/classes/address';
 import { UserService } from 'src/app/shared/services/user.service';
 import { ShippingResponse } from 'src/app/shared/classes/shipping-response';
+import { ToastrService } from 'ngx-toastr';
+import { OrderDto } from 'src/app/shared/classes/order-dto';
+import { OrderDetail } from 'src/app/shared/classes/order-detail'
 
 @Component({
     selector: 'app-checkout',
@@ -22,6 +25,7 @@ import { ShippingResponse } from 'src/app/shared/classes/shipping-response';
 })
 export class CheckoutComponent implements OnInit {
     private userId = Number(localStorage.getItem('user-id'))
+    private cartProducts: Product[] = JSON.parse(localStorage.getItem('cartItems'));
 
     addresses: Address[] = [];
     isAddress: boolean = false;
@@ -32,7 +36,7 @@ export class CheckoutComponent implements OnInit {
 
     public checkoutForm: UntypedFormGroup;
     public products: Product[] = [];
-    public payment: string = 'ZaloPay';
+    public payment: string = 'CASH';
     public amount: any;
     public paymentUrl: string;
     isGenerated = false;
@@ -41,6 +45,7 @@ export class CheckoutComponent implements OnInit {
         public productService: ProductService,
         private orderService: OrderService,
         private userService: UserService,
+        private toastService: ToastrService,
         private router: Router
     ) {
         this.checkoutForm = this.fb.group({
@@ -96,6 +101,65 @@ export class CheckoutComponent implements OnInit {
     //         amount: this.amount * 100
     //     });
     // }
+
+    cashCheckout(): void {
+        const details: OrderDetail[] = [];
+        const orderTrackingNumber = crypto.randomUUID();
+        if (this.isShipping == false) {
+            const newOrder = new OrderDto();
+            newOrder.address = 'Đến shop lấy'
+            newOrder.lat = '0';
+            newOrder.lng = '0';
+            newOrder.orderTrackingNumber = orderTrackingNumber;
+            newOrder.paymentMethod = 'CASH';
+            newOrder.shippingCost = 0;
+
+            this.cartProducts.forEach((cartItem) => {
+                const detail = new OrderDetail();
+                detail.productId = cartItem.id;
+                detail.quantity = cartItem.quantity;
+                details.push(detail);
+            })
+
+            newOrder.orderDetails = details;
+            this.orderService.saveNewOrder(this.userId, newOrder).subscribe({
+                next: (order) => {
+                    this.toastService.success("Đặt đơn thành công");
+                    this.router.navigate(['/home/order', order.id]);
+                    localStorage.removeItem('cartItems');
+                }
+            })
+        }
+        else if (this.isShipping == true && this.isAddress == true) {
+            const newOrder = new OrderDto();
+
+            this.cartProducts.forEach((cartItem) => {
+                const detail = new OrderDetail();
+                detail.productId = cartItem.id;
+                detail.quantity = cartItem.quantity;
+                details.push(detail);
+            })
+
+            newOrder.address = this.shippingAddress + ", Đà Nẵng"
+            newOrder.lat = this.shippingResponse.location.lat;
+            newOrder.lng = this.shippingResponse.location.lng;
+            newOrder.shippingCost = this.shippingResponse.cost;
+            newOrder.orderTrackingNumber = orderTrackingNumber;
+            newOrder.paymentMethod = 'CASH';
+
+            newOrder.orderDetails = details;
+            this.orderService.saveNewOrder(this.userId, newOrder).subscribe({
+                next: (order) => {
+                    this.toastService.success("Đặt đơn thành công");
+                    this.router.navigate(['/home/order', order.id]);
+                    localStorage.removeItem('cartItems');
+                }
+            })
+        }
+        else {
+            this.toastService.warning("Vui lòng chọn địa chỉ giao hàng trước khi đặt đơn");
+        }
+    }
 
     zaloPayCheckout(): void {
         const productsDto: ProductDto[] = [];

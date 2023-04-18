@@ -3,6 +3,8 @@ import { QuickViewComponent } from '../../modal/quick-view/quick-view.component'
 import { CartModalComponent } from '../../modal/cart-modal/cart-modal.component';
 import { Product } from '../../../classes/product';
 import { ProductService } from '../../../services/product.service';
+import { Router } from '@angular/router';
+import { FirebaseService } from 'src/app/shared/services/firebase.service';
 
 @Component({
   selector: 'app-product-box-one',
@@ -10,6 +12,7 @@ import { ProductService } from '../../../services/product.service';
   styleUrls: ['./product-box-one.component.scss']
 })
 export class ProductBoxOneComponent implements OnInit {
+  private userId = this.firebaseService.getUserId();
 
   @Input() product: Product;
   @Input() currency: any = this.productService.Currency; // Default Currency 
@@ -23,7 +26,10 @@ export class ProductBoxOneComponent implements OnInit {
 
   public ImageSrc: string
 
-  constructor(private productService: ProductService) { }
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private firebaseService: FirebaseService) { }
 
   ngOnInit(): void {
     if (this.loader) {
@@ -65,11 +71,14 @@ export class ProductBoxOneComponent implements OnInit {
   }
 
   addToWishlist(product: any) {
-    this.productService.addToWishlist(1, product);
+    this.productService.addToWishlist(this.userId, product);
   }
 
   addToCompare(product: any) {
     this.productService.addToCompare(product);
   }
 
+  navigateToProduct(id: number) {
+    this.router.navigate(['/shop/products', id]).then(() => { window.location.reload() })
+  }
 }

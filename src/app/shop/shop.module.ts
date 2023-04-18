@@ -73,7 +73,6 @@ import { RouterModule } from '@angular/router';
     ],
     imports: [
         CommonModule,
-        // NgxPayPalModule,
         Ng5SliderModule,
         InfiniteScrollModule,
         SharedModule,

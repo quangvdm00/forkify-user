@@ -19,21 +19,7 @@ export class ProductLeftSidebarComponent implements OnInit {
 
     comments: Comment[] = [];
 
-    public product: Product = {
-        averageRating: 0,
-        categories: [],
-        cost: 0,
-        description: "",
-        discountPercent: 0,
-        id: 0,
-        images: [],
-        isEnabled: false,
-        name: "",
-        quantity: 0,
-        reviewCount: 0,
-        shop: null,
-        sold: 0
-    };
+    public product: Product;
     public counter: number = 1;
     public activeSlide: any = 0;
     public selectedSize: any;
@@ -63,7 +49,6 @@ export class ProductLeftSidebarComponent implements OnInit {
 
     loadProductData() {
         const id = +this.route.snapshot.paramMap.get('id');
-        console.log(id)
         this.productService.getProductById(id).subscribe((product) => {
             this.product = product;
             this.productService.checkLoveProduct(this.userId, this.product.id).subscribe((response) => {

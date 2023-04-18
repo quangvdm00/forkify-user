@@ -25,9 +25,11 @@
             <div class="col-md-12">
                 <div class="success-text">
                     <i class="fa fa-check-circle" aria-hidden="true"></i>
-                    <h2>Thanh toán thành công</h2>
-                    <p>Đơn hàng của bạn đã thanh toán thành công.</p>
+                    <h2>Đặt hàng thành công</h2>
+                    <p>Đơn hàng của bạn đã đặt thành công. Vui lòng chờ trong ít phút và shipper sẽ mang đến cho bạn!
+                    </p>
                     <p>Mã giao dịch: {{ orderDetails.orderId }}</p>
+                    <button class="btn btn-solid">Xem trạng thái đơn hàng</button>
                 </div>
             </div>
         </div>
@@ -36,7 +38,7 @@
 <!-- Section ends -->
 
 <!-- order-detail section start -->
-<section class="section-b-space" *ngIf="orderDetails">
+<!-- <section class="section-b-space" *ngIf="orderDetails">
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
@@ -44,9 +46,6 @@
                     <h3>Đơn hàng của bạn</h3>
                     <hr>
                     <div class="row product-order-detail" *ngFor="let product of orderDetails.product">
-                        <!-- <div class="col-3">
-                            <img [src]="product?.images[0]?.imageUrl" alt="" class="img-fluid">
-                        </div> -->
                         <div class="col-3 order_detail">
                             <div>
                                 <h4>Tên sản phẩm</h4>
@@ -132,7 +131,6 @@
                                 <div class="step-bar-right"></div>
                             </div>
                         </div>
-                        <!--                        <button (click)="nextStep()">Next</button>-->
                         <div>Order Status: {{ this.orderStatus }}</div>
                     </div>
                     <div class="col-sm-12 payment-mode">
@@ -150,5 +148,5 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 <!-- Section ends -->
