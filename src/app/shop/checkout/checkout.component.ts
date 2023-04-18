@@ -169,21 +169,45 @@ export class CheckoutComponent implements OnInit {
             productsDto[i] = prodDto;
         }
 
-        this.getTotal.subscribe(result => {
-            const orderInfo: OrderInfo = new OrderInfo(this.checkoutForm.get('address').value, result.toString(), orderTrackingNumber);
-            const paymentInfo: PaymentInfo = new PaymentInfo(productsDto, orderInfo);
-            this.orderService.createZaloPayOrder(paymentInfo, this.checkoutForm.value).subscribe({
-                next: data => {
-                    this.paymentUrl = data.paymentOrderUrl;
-                },
-                error: err => console.log(err)
-            }
-            );
+        if (this.isShipping == false) {
+            this.getTotal.subscribe(result => {
+                const orderInfo: OrderInfo = new OrderInfo('Đến shop lấy', result.toString(), orderTrackingNumber);
+                const paymentInfo: PaymentInfo = new PaymentInfo(productsDto, orderInfo);
+                this.orderService.createZaloPayOrder(paymentInfo, "Đến shop lấy").subscribe({
+                    next: data => {
+                        this.paymentUrl = data.paymentOrderUrl;
+                    },
+                    error: err => console.log(err)
+                }
+                );
 
-            setTimeout(() => {
-                window.open(this.paymentUrl, '_blank');
-            }, 2000);
-        })
+                setTimeout(() => {
+                    window.open(this.paymentUrl, '_blank');
+                }, 2000);
+            })
+        }
+        else if (this.isShipping == true && this.isAddress == true) {
+            localStorage.setItem('shippingInfo', JSON.stringify(this.shippingResponse));
+            this.getTotal.subscribe(result => {
+                const orderInfo: OrderInfo = new OrderInfo(this.shippingAddress, result.toString(), orderTrackingNumber);
+                const paymentInfo: PaymentInfo = new PaymentInfo(productsDto, orderInfo);
+                this.orderService.createZaloPayOrder(paymentInfo, this.shippingAddress).subscribe({
+                    next: data => {
+                        this.paymentUrl = data.paymentOrderUrl;
+                    },
+                    error: err => console.log(err)
+                }
+                );
+                setTimeout(() => {
+                    window.open(this.paymentUrl, '_blank');
+                }, 2000);
+            })
+        }
+        else {
+            this.toastService.warning("Vui lòng chọn địa chỉ giao hàng trước khi đặt đơn");
+        }
+
+
 
 
 
@@ -284,5 +308,5 @@ export class CheckoutComponent implements OnInit {
         this.shippingResponse = undefined;
     }
 
-    get shippingAddress() { return this.checkoutForm.get('address').value }
+    get shippingAddress() { return this.checkoutForm.get('address').value + ', Đà Nẵng' }
 }

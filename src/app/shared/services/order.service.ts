@@ -59,9 +59,9 @@ export class OrderService {
         this.router.navigate(['/shop/checkout/success', orderId]);
     }
 
-    public createZaloPayOrder(paymentInfo: PaymentInfo, details: any): Observable<any> {
+    public createZaloPayOrder(paymentInfo: PaymentInfo, address: string): Observable<any> {
         var item = {
-            shippingDetails: details,
+            shippingAddress: address,
             product: paymentInfo.items,
             orderId: paymentInfo.orderInfo.orderId,
             totalAmount: paymentInfo.orderInfo.amount
