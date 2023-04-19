@@ -37,15 +37,16 @@
             <a href="javascript:void(0)" title="Quick View" (click)="QuickView.openModal()">
                 <i class="ti-search" aria-hidden="true"></i>
             </a>
-            <a href="javascript:void(0)" title="Compare" (click)="addToCompare(product)">
+            <!-- <a href="javascript:void(0)" title="Compare" (click)="addToCompare(product)">
                 <i class="ti-reload" aria-hidden="true"></i>
-            </a>
+            </a> -->
         </div>
     </div>
     <div class="product-detail">
         <div class="product-detail-box">
             <a [routerLink]="['/shop/products/', product?.name.replace(' ', '-')]">
-                <div class="edit-product-name">{{ product?.name.length > 20 ? product?.name.slice(0, 20) + '...' : product?.name | titlecase }}</div>
+                <div class="edit-product-name">{{ product?.name.length > 20 ? product?.name.slice(0, 20) + '...' :
+                    product?.name | titlecase }}</div>
             </a>
             <div class="product-price-mlem">
                 {{ product?.cost - (product?.cost * product?.discountPercent /100) | currency: "VND"}}

@@ -43,7 +43,6 @@ export class FirebaseService {
                         response.user.getIdToken().then((token: string) => {
                             this.token = token;
                             localStorage.setItem('jwt-token', token);
-                            console.log(localStorage.getItem('jwt-token'));
                             this.userService.getUserByEmail(email).subscribe((user) => {
                                 if ((user.role.roleName == 'ROLE_ADMIN' || user.role.roleName == 'ROLE_USER') && !user.isLocked) {
                                     this.loggedIn = true;
