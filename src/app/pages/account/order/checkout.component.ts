@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Order } from 'src/app/shared/classes/order';
 import { OrderResponse } from 'src/app/shared/classes/order-dto';
@@ -10,12 +10,15 @@ import { OrderService } from 'src/app/shared/services/order.service';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, OnDestroy {
   private userId = this.firebaseService.getUserId();
 
   currentStep = 1;
   numSteps = 4;
   order: OrderResponse;
+
+  refreshInterval: number = 5000;
+  refreshTimeout;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +27,7 @@ export class CheckoutComponent implements OnInit {
   ) {
 
   }
+
 
   ngOnInit(): void {
     const id = +this.route.snapshot.paramMap.get("id");
@@ -41,19 +45,24 @@ export class CheckoutComponent implements OnInit {
         this.nextStep()
       }
       else if (this.order.status == 'COMPLETED') {
-        this.currentStep = 3;
-        this.nextStep()
+        this.currentStep = 4;
+        this.nextStep();
+        clearTimeout(this.refreshTimeout);
       }
       else {
 
       }
     })
-  }
 
+    this.refreshTimeout = setTimeout(() => {
+      this.ngOnInit();
+    }, this.refreshInterval)
+
+  }
 
   nextStep() {
     this.currentStep++;
-    if (this.currentStep > this.numSteps) {
+    if (this.currentStep > this.numSteps + 1) {
       this.currentStep = 1;
     }
     var stepper = document.getElementById("stepper1");
@@ -94,4 +103,7 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    clearTimeout(this.refreshTimeout);
+  }
 }
