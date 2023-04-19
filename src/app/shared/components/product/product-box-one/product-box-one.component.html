@@ -1,4 +1,4 @@
-<div *ngIf="!loader">
+<div class="product-holder" *ngIf="!loader">
     <div class="img-wrapper">
         <div class="lable-block">
             <!--            <span class="lable3" *ngIf="product.new">new</span>-->
@@ -7,7 +7,7 @@
         <div class="front">
             <a (click)="navigateToProduct(product.id)" style="cursor: pointer;">
                 <img [defaultImage]="ImageSrc ? ImageSrc : 'assets/images/product/placeholder.jpg'"
-                    [lazyLoad]="ImageSrc ? ImageSrc : product.images[0].imageUrl" class="img-fluid lazy-loading"
+                    [lazyLoad]="ImageSrc ? ImageSrc : product.images[0].imageUrl" class="img-border lazy-loading"
                     alt="{{ product.images[0].id }}" />
             </a>
         </div>
@@ -24,7 +24,7 @@
                 </a>
             </li>
         </ul>
-        <div class="cart-info cart-wrap">
+        <div class="cart-info cart-wrap cart-mlem">
             <a href="javascript:void(0)" title="Add to cart" (click)="CartModal.openModal(product)" *ngIf="cartModal">
                 <i class="ti-shopping-cart"></i>
             </a>
@@ -43,18 +43,17 @@
         </div>
     </div>
     <div class="product-detail">
-        <div>
-            <bar-rating [rate]="5" [readOnly]="true"></bar-rating>
+        <div class="product-detail-box">
             <a [routerLink]="['/shop/products/', product?.name.replace(' ', '-')]">
-                <h6>{{ product?.name | titlecase }}</h6>
+                <div class="edit-product-name">{{ product?.name.length > 20 ? product?.name.slice(0, 20) + '...' : product?.name | titlecase }}</div>
             </a>
-            <p>{{ product?.description }}</p>
-            <h4>
-                {{ product?.price * currency?.price | discount:product | currency:currency?.currency:'symbol' }}
-                <del *ngIf="product?.discount"><span class="money"> {{ product?.price * currency?.price |
-                        currency:currency?.currency:'symbol' }}</span>
+            <div class="product-price-mlem">
+                {{ product?.cost - (product?.cost * product?.discountPercent /100) | currency: "VND"}}
+                <del *ngIf="product?.discountPercent">
+                    <span class="money"> {{ product?.cost |currency:currency?.currency:'symbol' }}</span>
                 </del>
-            </h4>
+            </div>
+            <bar-rating [rate]="product?.averageRating" [readOnly]="true"></bar-rating>
             <!-- <ul class="color-variant" *ngIf="Color(product?.variants).length">
                 <li [class]="color" *ngFor="let color of Color(product?.variants)"
                     [ngStyle]="{'background-color': color}" (click)="ChangeVariants(color, product)">
