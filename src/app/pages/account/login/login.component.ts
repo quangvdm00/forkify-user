@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent implements OnInit {
 
     loginForm: FormGroup;
+    showPassword: boolean = false;
 
 
     constructor(
