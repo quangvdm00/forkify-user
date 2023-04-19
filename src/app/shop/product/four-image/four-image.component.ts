@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../../shared/classes/product';
 import { ProductService } from '../../../shared/services/product.service';
 import { SizeModalComponent } from "../../../shared/components/modal/size-modal/size-modal.component";
+import { FirebaseService } from 'src/app/shared/services/firebase.service';
 
 @Component({
     selector: 'app-four-image',
@@ -10,6 +11,7 @@ import { SizeModalComponent } from "../../../shared/components/modal/size-modal/
     styleUrls: ['./four-image.component.scss']
 })
 export class FourImageComponent implements OnInit {
+    private userId = this.firebaseService.getUserId();
 
     public product: Product = {
         averageRating: 0,
@@ -33,8 +35,10 @@ export class FourImageComponent implements OnInit {
 
     @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
-    constructor(private route: ActivatedRoute, private router: Router,
-        public productService: ProductService) {
+    constructor(private route: ActivatedRoute,
+        private router: Router,
+        public productService: ProductService,
+        private firebaseService: FirebaseService) {
         this.route.data.subscribe(response => this.product = response.data);
     }
 
@@ -95,7 +99,7 @@ export class FourImageComponent implements OnInit {
 
     // Add to Wishlist
     addToWishlist(product: any) {
-        // this.productService.addToWishlist(product);
+        this.productService.addToWishlist(this.userId, product);
     }
 
 }

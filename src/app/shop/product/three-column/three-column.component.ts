@@ -4,6 +4,7 @@ import { ProductDetailsMainSlider, ProductDetailsThumbSlider } from '../../../sh
 import { Product } from '../../../shared/classes/product';
 import { ProductService } from '../../../shared/services/product.service';
 import { SizeModalComponent } from "../../../shared/components/modal/size-modal/size-modal.component";
+import { FirebaseService } from 'src/app/shared/services/firebase.service';
 
 @Component({
     selector: 'app-three-column',
@@ -11,6 +12,7 @@ import { SizeModalComponent } from "../../../shared/components/modal/size-modal/
     styleUrls: ['./three-column.component.scss']
 })
 export class ThreeColumnComponent implements OnInit {
+    private userId = this.firebaseService.getUserId();
 
     public product: Product = {
         averageRating: 0,
@@ -37,8 +39,10 @@ export class ThreeColumnComponent implements OnInit {
     public ProductDetailsMainSliderConfig: any = ProductDetailsMainSlider;
     public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
 
-    constructor(private route: ActivatedRoute, private router: Router,
-        public productService: ProductService) {
+    constructor(private route: ActivatedRoute,
+        private router: Router,
+        public productService: ProductService,
+        private firebaseService: FirebaseService) {
         this.route.data.subscribe(response => this.product = response.data);
     }
 
@@ -99,7 +103,7 @@ export class ThreeColumnComponent implements OnInit {
 
     // Add to Wishlist
     addToWishlist(product: any) {
-        // this.productService.addToWishlist(product);
+        this.productService.addToWishlist(this.userId, product);
     }
 
 }
