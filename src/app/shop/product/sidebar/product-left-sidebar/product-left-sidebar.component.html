@@ -39,7 +39,7 @@
                                     class="product-slick">
                                     <ng-container *ngFor="let image of product?.images; index as i">
                                         <ng-template carouselSlide [id]="i">
-                                            <div>
+                                            <div style="height: 524px;">
                                                 <img [defaultImage]="'assets/images/product/placeholder.jpg'"
                                                     [lazyLoad]="image.imageUrl" class="img-fluid">
                                             </div>
@@ -85,7 +85,7 @@
                                         </li>
                                     </ul>
 <!--                                    <app-stock-inventory [stock]="product?.stock"></app-stock-inventory>-->
-                                    <div class="product-description border-product">
+                                    <!-- <div class="product-description border-product">
                                         <h6 class="product-title size-text" *ngIf="Size(product?.categories).length">
                                             select size
                                             <span>
@@ -103,36 +103,14 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <!--                                        <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span>-->
-                                        <!--                                        </h5>-->
-                                        <!--                                        <h5 class="avalibility" *ngIf="counter > product.stock">-->
-                                        <!--                                            <span>Out of Stock</span></h5>-->
-                                        <h6 class="product-title">Số lượng</h6>
-                                        <div class="qty-box">
-                                            <div class="input-group">
-                                                <span class="input-group-prepend">
-                                                    <button type="button" class="btn quantity-left-minus"
-                                                        data-type="minus" (click)="decrement()">
-                                                        <i class="ti-angle-left"></i>
-                                                    </button>
-                                                </span>
-                                                <input type="text" name="quantity" class="form-control input-number"
-                                                    [value]="counter" disabled />
-                                                <span class="input-group-prepend">
-                                                    <button type="button" class="btn quantity-right-plus"
-                                                        data-type="plus" (click)="increment()">
-                                                        <i class="ti-angle-right"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                                               <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span>
+                                                                               </h5>
+                                                                               <h5 class="avalibility" *ngIf="counter > product.stock">
+                                                                                   <span>Out of Stock</span></h5>
+                                        
+                                    </div> -->
                                     <div class="product-buttons">
-                                        <a class="btn btn-solid" (click)="addToCart(product)">Thêm
-                                            vào giỏ</a>
-                                        <!-- <a href="javascrip:void(0)" class="btn btn-solid"
-                                            [class.disabled]="counter > product.stock" (click)="buyNow(product)">Mua
-                                            ngay</a> -->
+                                        <a class="mx-0 btn btn-solid" (click)="addToCart(product)">Thêmvào giỏ</a>
                                     </div>
                                     <div class="border-product">
                                         <h6 class="product-title">Chi tiết sản phẩm</h6>
@@ -154,7 +132,7 @@
                                     </div>
 
                                     <div class="border-product">
-                                        <h6 class="product-title">Chia sẻ</h6>
+                                        <h6 class="product-title">Chia sẻ:</h6>
                                         <div class="product-icon">
                                             <app-social></app-social>
                                             <form class="d-inline-block">
@@ -209,18 +187,17 @@
                                                             <div
                                                                 class="d-flex justify-content-between align-items-center">
                                                                 <div class="user d-flex flex-row align-items-center">
-                                                                    <img [src]="comment?.user?.imageUrl" width="30"
-                                                                        class="user-img rounded-circle mr-2">
-                                                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;<small
-                                                                            class="font-weight-bold text-primary">{{
-                                                                            comment?.user?.fullName
-                                                                            }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                                        <small class="font-weight-bold">{{
-                                                                            comment?.content }}</small></span>
+                                                                    <img [src]="comment?.user?.imageUrl" width="60" class="user-img rounded-circle me-2">
+                                                                    
+                                                                    <div>
+                                                                        <div class="fw-bold text-dark me-3 fs-name">{{ comment?.user?.fullName}}</div>
+                                                                        <bar-rating [rate]="comment?.rating" [readOnly]="true"></bar-rating>
+                                                                        <div class="style-comment fst-italic">{{ comment?.content }}</div>
+                                                                    </div>
+                                                                    
+                                                                    
                                                                 </div>
-                                                                <small><bar-rating [rate]="comment?.rating"
-                                                                        [readOnly]="true"></bar-rating></small>
+                                                                
                                                             </div>
 
                                                             <!-- <div

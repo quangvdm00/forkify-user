@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { DistrictService } from 'src/app/shared/services/district.service';
 import { District } from 'src/app/shared/classes/district';
@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
     wards: Ward[] = [];
     isHaveDistrict: boolean = false;
 
+    showPassword: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -43,20 +44,46 @@ export class RegisterComponent implements OnInit {
 
     createRegisterForm() {
         this.registerForm = this.formBuilder.group({
-            email: [''],
-            dob: [''],
-            phoneNumber: [''],
-            fullName: [''],
-            identifiedCode: [''],
-            password: [''],
-            confirmPassword: [''],
-            address: [''],
-            district: [''],
-            ward: ['']
-        });
+            email: new FormControl("", [Validators.required, Validators.email]),
+            dob: new FormControl("", [Validators.required]),
+            phoneNumber: new FormControl("", [Validators.required, Validators.pattern(/^(((\+|)84)|0)([1-9]{1})([0-9]{8})\b/)]),
+            fullName: new FormControl("", [Validators.required, Validators.minLength(2)]),
+            identifiedCode: new FormControl("", [Validators.required, Validators.pattern(/^(\d{9}|\d{12})$/)]),
+            password: new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
+            confirmPassword: new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
+            address: new FormControl("", [Validators.required, Validators.minLength(8)]),
+            district: new FormControl("", [Validators.required]),
+            ward: new FormControl("", [Validators.required]),
+        },
+        {
+            validator: this.ConfirmedValidator("password", "confirmPassword"),
+        }
+        );
     }
 
+    // Validation for password and confirm password
+  ConfirmedValidator(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+      if (matchingControl.errors && !matchingControl.errors.confirmedValidator) {
+        return;
+      }
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ confirmedValidator: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
+    };
+  }
+
     onSignUp() {
+
+        if (this.registerForm.invalid) {
+            this.registerForm.markAllAsTouched();
+            return;
+        } 
+
         const register = new Register();
         const newAddress = new Address();
         // newAddress.id = 1;
